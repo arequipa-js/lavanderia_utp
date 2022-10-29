@@ -11,6 +11,7 @@ import com.lavanderia.utp.model.Persona;
 import java.util.ArrayList;
 import java.util.List;
 import com.lavanderia.utp.interfaces.PersonaInterface;
+import com.lavanderia.utp.utils.Functions;
 
 public class PersonaDAO implements PersonaInterface {
 
@@ -52,10 +53,8 @@ public class PersonaDAO implements PersonaInterface {
     @Override
     public List<Persona> search(String searchText) {
         List<Persona> list = new ArrayList<>();
-        String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE nombres ILIKE " + "'%" + searchText + "%'" + " OR apellidos ILIKE " + "'%" + searchText + "%'" + " OR DNI = " + searchText;
-        
-        System.out.println("miauuuuuuuuuuuuuuuuuuuuuuuuuuu");
-        System.out.println(sql);
+        int dni = Functions.toInteger(searchText);
+        String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE (nombres ILIKE " + "'%" + searchText + "%'" + " OR apellidos ILIKE " + "'%" + searchText + "%'" + " OR DNI = " + dni + ") AND tipo_persona='C'";
 
         try {
             ps = con.prepareStatement(sql);
@@ -69,7 +68,9 @@ public class PersonaDAO implements PersonaInterface {
                 persona.setDireccion(rs.getString("direccion"));
                 persona.setEmail(rs.getString("email"));
                 persona.setTelefono(rs.getInt("telefono"));
-                persona.setSexo(rs.getString("sexo").charAt(0));
+                if (rs.getString("sexo") != null) {
+                    persona.setSexo(rs.getString("sexo").charAt(0));
+                }
                 persona.setFechaCreacion(rs.getDate("fecha_creacion"));
                 list.add(persona);
             }
