@@ -11,12 +11,18 @@ import com.lavanderia.utp.model.Visita;
 import java.util.ArrayList;
 import java.util.List;
 import com.lavanderia.utp.interfaces.GenericInterface;
+import com.lavanderia.utp.model.Persona;
+import com.lavanderia.utp.model.Solicitud;
+import com.lavanderia.utp.utils.Common;
+import com.lavanderia.utp.utils.EmailService;
 
 public class VisitaDAO implements GenericInterface<Visita> {
 
     static Connection con = DBConnection.getConnection();
     static PreparedStatement ps;
     static ResultSet rs;
+    SolicitudDAO solicitudDAO = new SolicitudDAO();
+    PersonaDAO personaDAO = new PersonaDAO();
 
     @Override
     public List<Visita> getAll() {
@@ -47,6 +53,24 @@ public class VisitaDAO implements GenericInterface<Visita> {
     public void add(Visita visita) {
         String sql = "INSERT INTO visitas (solicitud_id, movilidad_id, fecha_recojo, hora_recojo) VALUES (" + visita.getSolicitudId() + ", " + visita.getMovilidadId() + ", '" + visita.getFechaRecojo() + "', '" + visita.getHoraRecojo() + "')";
         System.out.println(sql);
+
+        try {
+            Solicitud solicitud = solicitudDAO.getById(visita.getSolicitudId());
+            int personaId = solicitud.getPersonaId();
+            Persona persona = personaDAO.getById(personaId);
+            String toEmail = persona.getEmail();
+            String subject = Common.VISITA_ASUNTO;
+            String message = "<h1>Estimado(a): " + persona.getNombres() + " " + persona.getApellidos() + "</h1><br>";
+            message += Common.VISITA_MENSAJE + visita.getSolicitudId() + "<br><br>";
+            message += "<h3>" + Common.FECHA_HORA_VISITA + "</h3><br>";
+            message += visita.getFechaRecojo() + "<br>";
+            message += visita.getHoraRecojo() + "<br>";
+            message += "<br><br>" + Common.GRACIAS;
+            EmailService emailService = new EmailService();
+            emailService.sendMail(toEmail, subject, message);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
@@ -97,7 +121,7 @@ public class VisitaDAO implements GenericInterface<Visita> {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public List<Visita> search(String searchText) {
         return null;

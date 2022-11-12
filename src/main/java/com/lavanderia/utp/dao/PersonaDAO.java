@@ -11,6 +11,8 @@ import com.lavanderia.utp.model.Persona;
 import java.util.ArrayList;
 import java.util.List;
 import com.lavanderia.utp.interfaces.PersonaInterface;
+import com.lavanderia.utp.utils.Common;
+import com.lavanderia.utp.utils.EmailService;
 import com.lavanderia.utp.utils.Functions;
 
 public class PersonaDAO implements PersonaInterface {
@@ -24,7 +26,7 @@ public class PersonaDAO implements PersonaInterface {
         List<Persona> list = new ArrayList<>();
 
         try {
-            String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE tipo_persona = '" + tipo + "' ORDER BY p.id"; 
+            String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE tipo_persona = '" + tipo + "' ORDER BY p.id";
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -84,6 +86,19 @@ public class PersonaDAO implements PersonaInterface {
     public void add(Persona persona) {
         String sql = "INSERT INTO personas (nombres, apellidos, dni, distrito_id, direccion, email, telefono, sexo, tipo_persona) VALUES ('" + persona.getNombres() + "', '" + persona.getApellidos() + "', " + persona.getDni() + ", " + persona.getDistritoId() + ", '" + persona.getDireccion() + "', '" + persona.getEmail() + "', " + persona.getTelefono() + ", '" + persona.getSexo() + "', 'C')";
         System.out.println(sql);
+
+        try {
+            String toEmail = persona.getEmail();
+            String subject = Common.CLIENTE_ASUNTO;
+            String message = "<h1>Estimado(a): " + persona.getNombres() + " " + persona.getApellidos() + "</h1><br>";
+            message += Common.CLIENTE_MENSAJE + "<br>";
+            message += "<br><br>" + Common.GRACIAS;
+            EmailService emailService = new EmailService();
+            emailService.sendMail(toEmail, subject, message);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
@@ -138,7 +153,7 @@ public class PersonaDAO implements PersonaInterface {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public boolean login(String email, String password) {
         boolean isAuthenticated = false;
@@ -153,7 +168,7 @@ public class PersonaDAO implements PersonaInterface {
         }
         return isAuthenticated;
     }
-    
+
     @Override
     public void addAdmin(Persona persona) {
         String sql = "INSERT INTO personas (email, password, nombres, apellidos, tipo_persona) VALUES ('" + persona.getEmail() + "', '" + persona.getPassword() + "', '" + persona.getNombres() + "', '" + persona.getApellidos() + "', 'A')";
@@ -165,8 +180,6 @@ public class PersonaDAO implements PersonaInterface {
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public void updateAdmin(Persona persona) {
