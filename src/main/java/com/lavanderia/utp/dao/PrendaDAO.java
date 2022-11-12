@@ -23,7 +23,7 @@ public class PrendaDAO implements GenericInterface<Prenda> {
         List<Prenda> list = new ArrayList<>();
 
         try {
-            ps = con.prepareStatement("SELECT p.id, p.persona_id, p.tipo_id, p.color_id, p.material_id, p.estado_id, p.marca, p.peso,  p.observaciones, p.costo, p.cantidad, CONCAT(per.nombres, ' ', per.apellidos) AS cliente, pc.color, pt.tipo, pm.material, pe.estado FROM prendas p JOIN personas per on per.id = p.persona_id JOIN prenda_colores pc on pc.id = p.color_id JOIN prenda_tipos pt on pt.id = p.tipo_id JOIN prenda_materiales pm on pm.id = p.material_id JOIN prenda_estados pe on pe.id = p.estado_id ORDER BY p.id");
+            ps = con.prepareStatement("SELECT p.id, p.persona_id, p.tipo_id, p.color_id, p.material_id, p.estado_id, p.marca, p.peso,  p.observaciones, p.cantidad, CONCAT(per.nombres, ' ', per.apellidos) AS cliente, pc.color, pt.tipo, pm.material, pe.estado FROM prendas p JOIN personas per on per.id = p.persona_id JOIN prenda_colores pc on pc.id = p.color_id JOIN prenda_tipos pt on pt.id = p.tipo_id JOIN prenda_materiales pm on pm.id = p.material_id JOIN prenda_estados pe on pe.id = p.estado_id ORDER BY p.id");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Prenda prenda = new Prenda();
@@ -36,7 +36,6 @@ public class PrendaDAO implements GenericInterface<Prenda> {
                 prenda.setMarca(rs.getString("marca"));
                 prenda.setPeso(rs.getFloat("peso"));
                 prenda.setObservaciones(rs.getString("observaciones"));
-                prenda.setCosto(rs.getFloat("costo"));
                 prenda.setCantidad(rs.getInt("cantidad"));
                 prenda.setCliente(rs.getString("cliente"));
                 prenda.setColor(rs.getString("color"));
@@ -53,7 +52,7 @@ public class PrendaDAO implements GenericInterface<Prenda> {
 
     @Override
     public void add(Prenda prenda) {
-        String sql = "INSERT INTO prendas (persona_id, tipo_id, color_id, material_id, marca, estado_id, peso, observaciones, costo, cantidad) VALUES (" + prenda.getPersonaId() + ", " + prenda.getTipoId() + ", " + prenda.getColorId() + ", " + prenda.getMaterialId() + ", '" + prenda.getMarca() + "', " + prenda.getEstadoId() + ", " + prenda.getPeso() + ", '" + prenda.getObservaciones() + "', " + prenda.getCosto() + ", " + prenda.getCantidad() + ")";
+        String sql = "INSERT INTO prendas (persona_id, tipo_id, color_id, material_id, marca, estado_id, peso, observaciones, cantidad) VALUES (" + prenda.getPersonaId() + ", " + prenda.getTipoId() + ", " + prenda.getColorId() + ", " + prenda.getMaterialId() + ", '" + prenda.getMarca() + "', " + prenda.getEstadoId() + ", " + prenda.getPeso() + ", '" + prenda.getObservaciones() + "', " + prenda.getCantidad() + ")";
         System.out.println(sql);
         try {
             ps = con.prepareStatement(sql);
@@ -80,7 +79,6 @@ public class PrendaDAO implements GenericInterface<Prenda> {
                 prenda.setMarca(rs.getString("marca"));
                 prenda.setPeso(rs.getFloat("peso"));
                 prenda.setObservaciones(rs.getString("observaciones"));
-                prenda.setCosto(rs.getFloat("costo"));
                 prenda.setCantidad(rs.getInt("cantidad"));
             }
         } catch (SQLException e) {
@@ -91,7 +89,7 @@ public class PrendaDAO implements GenericInterface<Prenda> {
 
     @Override
     public void update(Prenda prenda) {
-        String sql = "UPDATE prendas set persona_id = " + prenda.getPersonaId() + ", tipo_id = " + prenda.getTipoId() + ", color_id = " + prenda.getColorId() + ", material_id = " + prenda.getMaterialId() + ", estado_id = " + prenda.getEstadoId() + ", marca = '" + prenda.getMarca() + "', peso = " + prenda.getPeso() + ", observaciones = '" + prenda.getObservaciones() + "', costo = " + prenda.getCosto() + ", cantidad = " + prenda.getCantidad() + " WHERE id = " + prenda.getId();
+        String sql = "UPDATE prendas set persona_id = " + prenda.getPersonaId() + ", tipo_id = " + prenda.getTipoId() + ", color_id = " + prenda.getColorId() + ", material_id = " + prenda.getMaterialId() + ", estado_id = " + prenda.getEstadoId() + ", marca = '" + prenda.getMarca() + "', peso = " + prenda.getPeso() + ", observaciones = '" + prenda.getObservaciones() + "', cantidad = " + prenda.getCantidad() + " WHERE id = " + prenda.getId();
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();

@@ -11,7 +11,6 @@ public class Prenda {
     String marca;
     Float peso;
     String observaciones;
-    Float costo;
     int cantidad;
     String cliente;
     String color;
@@ -22,7 +21,7 @@ public class Prenda {
     public Prenda() {
     }
 
-    public Prenda(int persona_id, int tipo_id, int color_id, int material_id, int estado_id, String marca, Float peso, String observaciones, Float costo, int cantidad) {
+    public Prenda(int persona_id, int tipo_id, int color_id, int material_id, int estado_id, String marca, Float peso, String observaciones, int cantidad) {
         this.persona_id = persona_id;
         this.tipo_id = tipo_id;
         this.color_id = color_id;
@@ -31,7 +30,6 @@ public class Prenda {
         this.marca = marca;
         this.peso = peso;
         this.observaciones = observaciones;
-        this.costo = costo;
         this.cantidad = cantidad;
     }
     
@@ -105,14 +103,6 @@ public class Prenda {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
-    }
-
-    public Float getCosto() {
-        return costo;
-    }
-
-    public void setCosto(Float costo) {
-        this.costo = costo;
     }
 
     public int getCantidad() {

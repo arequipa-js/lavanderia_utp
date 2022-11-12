@@ -66,10 +66,6 @@
                         <label for="cantidad" class="form-label">Cantidad</label>
                         <form:input type="number" max="99" path="cantidad" cssClass="form-control w-25" required="true"  />
                     </div>
-                    <div class="mb-3">
-                        <label for="costo" class="form-label">Costo</label>
-                        <form:input path="costo" cssClass="form-control w-25" required="true" maxlength="5" />
-                    </div>
                     <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
                 </form:form>
                             
