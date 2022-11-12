@@ -11,6 +11,9 @@ public class Solicitud {
     Date fecha_creacion;
     String cliente;
     String fecha_solicitud;
+    int servicio_id;
+    int prenda_id;
+    String observaciones;
     
     public Solicitud() {
     }
@@ -41,6 +44,30 @@ public class Solicitud {
 
     public void setFechaSolicitud(String fecha_solicitud) {
         this.fecha_solicitud = fecha_solicitud;
+    }
+
+    public int getServicioId() {
+        return servicio_id;
+    }
+
+    public void setServicioId(int servicio_id) {
+        this.servicio_id = servicio_id;
+    }
+
+    public int getPrendaId() {
+        return prenda_id;
+    }
+
+    public void setPrendaId(int prenda_id) {
+        this.prenda_id = prenda_id;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
     
     public String getFechaCreacion() {

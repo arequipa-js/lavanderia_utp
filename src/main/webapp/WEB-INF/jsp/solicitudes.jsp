@@ -3,8 +3,7 @@
 <div class="p-3 mb-5 bg-dark text-white">
     <div class="container w-100 mt-5 mb-5">
         <h2 class="text-left mb-3">Solicitudes</h2>
-        <a class="btn btn-primary mb-3" href="solicitudes_add.html" role="button">Agregar Solicitud</a>
-        <a class="btn btn-primary mb-3" href="solicitud_detalles_add.html" role="button">Añadir Servicio</a>
+        <a class="btn btn-primary mb-3" href="solicitudes_add.html" role="button">Nueva Solicitud</a>
         <table class="table bg-white p-5">
             <thead>
                 <tr>
@@ -24,7 +23,7 @@
                         <td>${s.servicio}</td>
                         <td>${s.observaciones}</td>
                         <td>${s.fechaCreacion}</td>
-                        <td><a href="solicitud_edit?id=${s.id}"><i class="bi bi-pencil-fill"></i></a></td>
+                        <td><a href="comprobante?id=${s.id}"><i class="bi bi-receipt"></i></a></td>
                     </tr>
                 </c:forEach>
             </tbody>
