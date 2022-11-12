@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import com.lavanderia.utp.model.SolicitudDetalle;
 import java.util.ArrayList;
 import java.util.List;
-import com.lavanderia.utp.interfaces.GenericInterface;
+import com.lavanderia.utp.interfaces.SolicitudDetalleInterface;
 
-public class SolicitudDetalleDAO implements GenericInterface<SolicitudDetalle> {
+public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
 
     static Connection con = DBConnection.getConnection();
     static PreparedStatement ps;
@@ -23,7 +23,7 @@ public class SolicitudDetalleDAO implements GenericInterface<SolicitudDetalle> {
         List<SolicitudDetalle> list = new ArrayList<>();
 
         try {
-            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, sd.observaciones FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id ORDER BY cliente");
+            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, sd.observaciones FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id ORDER BY s.id");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 SolicitudDetalle solicitud = new SolicitudDetalle();
@@ -55,23 +55,29 @@ public class SolicitudDetalleDAO implements GenericInterface<SolicitudDetalle> {
     }
 
     @Override
-    public SolicitudDetalle getById(int id) {
-        SolicitudDetalle solicitud = new SolicitudDetalle();
+    public List<SolicitudDetalle> getBySolicitudId(int id) {
+        List<SolicitudDetalle> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT * FROM solicitud_detalles WHERE id = ?");
+            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, tarifa, sd.observaciones, pre.cantidad FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id JOIN prendas pre ON pre.id = sd.prenda_id WHERE s.id = ? ORDER BY s.id");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                solicitud.setId(rs.getInt("id"));
-                solicitud.setSolicitudId(rs.getInt("solicitud_id"));
-                solicitud.setServicioId(rs.getInt("servicio_id"));
-                solicitud.setPrendaId(rs.getInt("prenda_id"));
-                solicitud.setObservaciones(rs.getString("observaciones"));
+                SolicitudDetalle solicitudDetalle = new SolicitudDetalle();
+                solicitudDetalle.setId(rs.getInt("id"));
+                solicitudDetalle.setSolicitudId(rs.getInt("solicitud_id"));
+                solicitudDetalle.setServicioId(rs.getInt("servicio_id"));
+                solicitudDetalle.setObservaciones(rs.getString("observaciones"));
+                solicitudDetalle.setCliente(rs.getString("cliente"));
+                solicitudDetalle.setServicio(rs.getString("servicio"));
+                solicitudDetalle.setTarifa(rs.getInt("tarifa"));
+                solicitudDetalle.setCantidad(rs.getInt("cantidad"));
+                solicitudDetalle.setFechaCreacion(rs.getDate("fc"));
+                list.add(solicitudDetalle);
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return solicitud;
+        return list;
     }
 
     @Override

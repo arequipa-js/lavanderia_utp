@@ -23,7 +23,7 @@
                         <td>${s.servicio}</td>
                         <td>${s.observaciones}</td>
                         <td>${s.fechaCreacion}</td>
-                        <td><a href="comprobante?id=${s.id}"><i class="bi bi-receipt"></i></a></td>
+                        <td><a href="comprobante?id=${s.solicitudId}"><i class="bi bi-receipt"></i></a></td>
                     </tr>
                 </c:forEach>
             </tbody>

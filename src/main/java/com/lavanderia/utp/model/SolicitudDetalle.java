@@ -13,6 +13,8 @@ public class SolicitudDetalle {
     String observaciones;
     String cliente;
     String servicio;
+    int tarifa;
+    int cantidad;
     Date fecha_creacion;
     
     public SolicitudDetalle() {
@@ -57,6 +59,22 @@ public class SolicitudDetalle {
         this.prenda_id = prenda_id;
     }
 
+    public int getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(int tarifa) {
+        this.tarifa = tarifa;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public String getObservaciones() {
         return observaciones;
     }
@@ -89,7 +107,6 @@ public class SolicitudDetalle {
 
     public void setFechaCreacion(Date fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
-    }
-    
-    
+    } 
+
 }

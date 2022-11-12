@@ -39,23 +39,16 @@ public class SolicitudController {
     @RequestMapping("/solicitudes_add")
     public String showform(Model model) {
         Solicitud solicitud = new Solicitud();
-        List<Persona> listClientes = personaDAO.getAll('C');
-        model.addAttribute("solicitud",  solicitud);
-        model.addAttribute("listClientes", listClientes);
-        return "solicitudes_add";
-    }
-    
-    @RequestMapping("/solicitud_detalles_add")
-    public String showformDetalle(Model model) {
         SolicitudDetalle solicitudDetalle = new SolicitudDetalle();
-        List<Solicitud> listSolicitudes = solicitudDAO.getAll();
+        List<Persona> listClientes = personaDAO.getAll('C');
         List<Servicio> listServicios = servicioDAO.getAll();
         List<Prenda> listPrendas = prendaDAO.getAll();
-        model.addAttribute("solicitudDetalle",  solicitudDetalle);
-        model.addAttribute("listSolicitudes", listSolicitudes);
+        model.addAttribute("solicitud",  solicitud);
+        model.addAttribute("listClientes", listClientes);
         model.addAttribute("listServicios", listServicios);
         model.addAttribute("listPrendas", listPrendas);
-        return "solicitud_detalles_add";
+        model.addAttribute("solicitudDetalle",  solicitudDetalle);
+        return "solicitudes_add";
     }
 
     @RequestMapping("/solicitud_edit")
@@ -65,6 +58,18 @@ public class SolicitudController {
         model.addAttribute("solicitud",  solicitud);
         model.addAttribute("listClientes", listClientes);
         return "solicitud_edit";
+    }
+
+    @RequestMapping("/comprobante")
+    public String showformComprobante(@RequestParam int id, Model model) {
+        List<SolicitudDetalle> solicitudDetalles = solicitudDetalleDAO.getBySolicitudId(id);
+        Solicitud solicitud = solicitudDAO.getById(id);
+        Persona cliente = personaDAO.getById(solicitud.getPersonaId());
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("listSolicitudDetalles", solicitudDetalles);
+        model.addAttribute("solicitud", id);
+        model.addAttribute("fechaSolicitud", solicitud.getFechaCreacion());
+        return "comprobante";
     }
 
     @RequestMapping("/solicitud_delete")
