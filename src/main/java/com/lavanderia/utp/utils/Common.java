@@ -17,12 +17,14 @@ public class Common {
     public static final String SERVICIO_ASUNTO = EMPRESA + "Servicio registrado";
     public static final String VISITA_ASUNTO = EMPRESA + "Programacion de visita registrada.";
     public static final String CLIENTE_ASUNTO = EMPRESA + "¡Bienvenido!";
+    public static final String COMPROBANTE_ASUNTO = EMPRESA + "Comprobante de pago.";
     
     // Email mensajes
     public static final String SOLICITUD_MENSAJE = "Su solicitud ha sido registrada exitosamente con nro: 00-";
     public static final String SERVICIO_MENSAJE = "Para brindar el servicio de: ";
     public static final String CLIENTE_MENSAJE = "Se ha registrado exitosamente en nuestro servicio de lavanderia.";
     public static final String VISITA_MENSAJE = "Se ha programado una visita a su domicilio de acuerdo a su solicitud nro: ";
+    public static final String COMPROBANTE_MENSAJE = "Se adjunta su comprobante de pago de los servicios requeridos.";
     public static final String FECHA_HORA_VISITA = "Fecha y hora de visita.";
     public static final String GRACIAS = "Muchas gracias por confiar en Lavanderia UTP.";
     
