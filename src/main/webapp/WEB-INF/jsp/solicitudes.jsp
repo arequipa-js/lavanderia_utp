@@ -13,6 +13,7 @@
                     <th scope="col">Observaciones</th>
                     <th scope="col">Fecha de creación</th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                         <td>${s.observaciones}</td>
                         <td>${s.fechaCreacion}</td>
                         <td><a href="comprobante?id=${s.solicitudId}"><i class="bi bi-receipt"></i></a></td>
+                        <td><a href="solicitud_servicios_add?id=${s.solicitudId}"><i class="bi bi-plus-square-fill"></i></a></td>
                     </tr>
                 </c:forEach>
             </tbody>

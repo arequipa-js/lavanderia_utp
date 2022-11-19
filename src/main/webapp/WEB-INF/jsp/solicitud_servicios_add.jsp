@@ -7,21 +7,11 @@
         <jsp:include page="sidebar.jsp"/>
         <div class="p-3 mb-5 bg-dark text-white">
             <div class="container w-50 mt-5 mb-5">
-                <h2 class="text-left mb-4">Registrar Solicitud</h2>
-                <form:form action="solicitud_add" method="post" modelAttribute="solicitud">
-                    <div class="mb-3">
-                        <label for="1" class="form-label">Cliente</label>
-                        <form:select path="personaId" cssClass="form-select w-50">
-                            <c:forEach var="c" items="${listClientes}">
-                                <form:option value="${c.id}" label="${c.nombres} ${c.apellidos}" />
-                            </c:forEach>
-                        </form:select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fechaSolicitud" class="form-label">Fecha de Solicitud</label>
-                        <input type="text" class="form-control w-25" id="2">
-                    </div>
-                    
+                <h2 class="text-left mb-2">Agregar servicio a solicitud 00${solicitud}</h2>
+                <h3 class="mt-3 mb-5">Cliente: ${cliente.nombres} ${cliente.apellidos}</h3>
+                
+                <form:form action="solicitud_servicio_add" method="post" modelAttribute="solicitudDetalle">
+                    <form:hidden path="solicitudId" value="${solicitud}" />
                     <div class="mb-3">
                         <label for="1" class="form-label">Servicio</label>
                         <form:select path="servicioId" cssClass="form-select w-50">
