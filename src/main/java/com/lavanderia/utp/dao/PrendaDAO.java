@@ -49,6 +49,38 @@ public class PrendaDAO implements GenericInterface<Prenda> {
         }
         return list;
     }
+    
+    public List<Prenda> getByClienteId(int clienteId) {
+        List<Prenda> list = new ArrayList<>();
+
+        try {
+            ps = con.prepareStatement("SELECT p.id, p.persona_id, p.tipo_id, p.color_id, p.material_id, p.estado_id, p.marca, p.peso,  p.observaciones, p.cantidad, CONCAT(per.nombres, ' ', per.apellidos) AS cliente, pc.color, pt.tipo, pm.material, pe.estado FROM prendas p JOIN personas per on per.id = p.persona_id JOIN prenda_colores pc on pc.id = p.color_id JOIN prenda_tipos pt on pt.id = p.tipo_id JOIN prenda_materiales pm on pm.id = p.material_id JOIN prenda_estados pe on pe.id = p.estado_id WHERE per.id = ? ORDER BY p.id");
+            ps.setInt(1, clienteId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Prenda prenda = new Prenda();
+                prenda.setId(rs.getInt("id"));
+                prenda.setPersonaId(rs.getInt("persona_id"));
+                prenda.setTipoId(rs.getInt("tipo_id"));
+                prenda.setColorId(rs.getInt("color_id"));
+                prenda.setMaterialId(rs.getInt("material_id"));
+                prenda.setEstadoId(rs.getInt("estado_id"));
+                prenda.setMarca(rs.getString("marca"));
+                prenda.setPeso(rs.getFloat("peso"));
+                prenda.setObservaciones(rs.getString("observaciones"));
+                prenda.setCantidad(rs.getInt("cantidad"));
+                prenda.setCliente(rs.getString("cliente"));
+                prenda.setColor(rs.getString("color"));
+                prenda.setTipo(rs.getString("tipo"));
+                prenda.setMaterial(rs.getString("material"));
+                prenda.setEstado(rs.getString("estado"));
+                list.add(prenda);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
 
     @Override
     public void add(Prenda prenda) {
