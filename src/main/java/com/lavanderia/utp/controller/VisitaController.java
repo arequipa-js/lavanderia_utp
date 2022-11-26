@@ -31,7 +31,7 @@ public class VisitaController {
     @RequestMapping("/visitas_add")
     public String showform(Model model) {
         Visita visita = new Visita();
-        List<Movilidad> listMovilidades = movilidadDAO.getAll();
+        List<Movilidad> listMovilidades = movilidadDAO.getByActivo(true);
         List<Solicitud> listSolicitudes = solicitudDAO.getAll();
         model.addAttribute("visita", visita);
         model.addAttribute("listMovilidades", listMovilidades);
@@ -42,7 +42,7 @@ public class VisitaController {
     @RequestMapping("/visita_edit")
     public String showformEdit(@RequestParam int id, Model model) {
         Visita visita = visitaDAO.getById(id);
-        List<Movilidad> listMovilidades = movilidadDAO.getAll();
+        List<Movilidad> listMovilidades = movilidadDAO.getByActivo(true);
         List<Solicitud> listSolicitudes = solicitudDAO.getAll();
         model.addAttribute("visita", visita);
         model.addAttribute("listMovilidades", listMovilidades);

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PersonaController {
@@ -22,7 +21,7 @@ public class PersonaController {
     @RequestMapping("/clientes")
     public String listAll(Model model) {
         Persona cliente = new Persona();
-        List<Persona> listClientes = personaDAO.getAll('C');
+        List<Persona> listClientes = personaDAO.getPersonas('C', false);
         model.addAttribute("cliente", cliente);
         model.addAttribute("listClientes", listClientes);
         return "clientes";

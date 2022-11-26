@@ -40,7 +40,7 @@ public class PrendaController {
     @RequestMapping("/prendas_add")
     public String showform(Model model) {
         Prenda prenda = new Prenda();
-        List<Persona> listClientes = personaDAO.getAll('C');
+        List<Persona> listClientes = personaDAO.getPersonas('C', true);
         List<PrendaColor> listColores = prendaColorDAO.getAll();
         List<PrendaTipo> listTipos = prendaTipoDAO.getAll();
         List<PrendaMaterial> listMateriales = prendaMaterialDAO.getAll();
@@ -57,7 +57,7 @@ public class PrendaController {
     @RequestMapping("/prenda_edit")
     public String showformEdit(@RequestParam int id, Model model) {
         Prenda prenda = prendaDAO.getById(id);
-        List<Persona> listClientes = personaDAO.getAll('C');
+        List<Persona> listClientes = personaDAO.getPersonas('C', true);
         List<PrendaColor> listColores = prendaColorDAO.getAll();
         List<PrendaTipo> listTipos = prendaTipoDAO.getAll();
         List<PrendaMaterial> listMateriales = prendaMaterialDAO.getAll();

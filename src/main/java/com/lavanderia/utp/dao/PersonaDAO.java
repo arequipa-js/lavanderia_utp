@@ -22,11 +22,14 @@ public class PersonaDAO implements PersonaInterface {
     static ResultSet rs;
 
     @Override
-    public List<Persona> getAll(char tipo) {
+    public List<Persona> getPersonas(char tipo, boolean filtrarActivos) {
         List<Persona> list = new ArrayList<>();
-
         try {
-            String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE tipo_persona = '" + tipo + "' ORDER BY p.id";
+            String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion, p.activo FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE tipo_persona = '" + tipo + "'";
+            if (filtrarActivos) {
+                sql += " AND p.activo = true";
+            }
+            sql += " ORDER BY p.id";
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -44,6 +47,7 @@ public class PersonaDAO implements PersonaInterface {
                     persona.setSexo(rs.getString("sexo").charAt(0));
                 }
                 persona.setFechaCreacion(rs.getDate("fecha_creacion"));
+                persona.setActivo(rs.getBoolean("activo"));
                 list.add(persona);
             }
         } catch (SQLException e) {
@@ -56,7 +60,7 @@ public class PersonaDAO implements PersonaInterface {
     public List<Persona> search(String searchText) {
         List<Persona> list = new ArrayList<>();
         int dni = Functions.toInteger(searchText);
-        String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE (nombres ILIKE " + "'%" + searchText + "%'" + " OR apellidos ILIKE " + "'%" + searchText + "%'" + " OR DNI = " + dni + ") AND tipo_persona='C'";
+        String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion, p.activo FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE (nombres ILIKE " + "'%" + searchText + "%'" + " OR apellidos ILIKE " + "'%" + searchText + "%'" + " OR DNI = " + dni + ") AND tipo_persona='C'";
 
         try {
             ps = con.prepareStatement(sql);
@@ -74,6 +78,7 @@ public class PersonaDAO implements PersonaInterface {
                     persona.setSexo(rs.getString("sexo").charAt(0));
                 }
                 persona.setFechaCreacion(rs.getDate("fecha_creacion"));
+                persona.setActivo(rs.getBoolean("activo"));
                 list.add(persona);
             }
         } catch (SQLException e) {
@@ -125,6 +130,7 @@ public class PersonaDAO implements PersonaInterface {
                 persona.setTelefono(rs.getInt("telefono"));
                 persona.setSexo(rs.getString("sexo").charAt(0));
                 persona.setFechaCreacion(rs.getDate("fecha_creacion"));
+                persona.setActivo(rs.getBoolean("activo"));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -134,7 +140,16 @@ public class PersonaDAO implements PersonaInterface {
 
     @Override
     public void update(Persona persona) {
-        String sql = "UPDATE personas set nombres = '" + persona.getNombres() + "', apellidos = '" + persona.getApellidos() + "', dni = " + persona.getDni() + ", distrito_id = " + persona.getDistritoId() + ", direccion = '" + persona.getDireccion() + "', email = '" + persona.getEmail() + "', telefono = " + persona.getTelefono() + ", sexo = '" + persona.getSexo() + "' WHERE id = " + persona.getId();
+        String sql = "UPDATE personas set nombres = '" + persona.getNombres() +
+                "', apellidos = '" + persona.getApellidos() +
+                "', dni = " + persona.getDni() +
+                ", distrito_id = " + persona.getDistritoId() +
+                ", direccion = '" + persona.getDireccion() +
+                "', email = '" + persona.getEmail() +
+                "', telefono = " + persona.getTelefono() +
+                ", sexo = '" + persona.getSexo() +
+                "', activo = " + persona.getActivo() +
+                " WHERE id = " + persona.getId();
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();

@@ -20,10 +20,18 @@ public class ServicioDAO implements GenericInterface<Servicio> {
 
     @Override
     public List<Servicio> getAll() {
-        List<Servicio> list = new ArrayList<>();
+        return null;
+    }
 
+    public List<Servicio> getByActivo(boolean filtrarActivos) {
+        List<Servicio> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT s.id, s.nombre, s.categoria_id, s.tarifa, s.activo, c.nombre as categoria FROM servicios s JOIN categorias c on c.id = s.categoria_id ORDER BY s.nombre");
+            String sql = "SELECT s.id, s.nombre, s.categoria_id, s.tarifa, s.activo, c.nombre as categoria FROM servicios s JOIN categorias c on c.id = s.categoria_id";
+            if (filtrarActivos) {
+                sql += " WHERE s.activo = true";
+            }
+            sql += " ORDER BY s.nombre";
+            ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Servicio servicio = new Servicio();

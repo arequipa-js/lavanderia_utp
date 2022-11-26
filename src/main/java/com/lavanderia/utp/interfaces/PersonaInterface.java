@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public interface PersonaInterface {
-    public List<Persona> getAll(char tipo);
+    public List<Persona> getPersonas(char tipo, boolean filtrarActivos);
     public List<Persona> search(String searchText);
     public void add(Persona persona);
     public Persona getById(int id);

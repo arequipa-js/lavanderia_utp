@@ -18,7 +18,7 @@ public class UsuarioController {
 
     @RequestMapping("/usuarios")
     public String listAll(Model model) {
-        List<Persona> listUsuarios = personaDAO.getAll('A');
+        List<Persona> listUsuarios = personaDAO.getPersonas('A', false);
         model.addAttribute("listUsuarios", listUsuarios);
         return "usuarios";
     }

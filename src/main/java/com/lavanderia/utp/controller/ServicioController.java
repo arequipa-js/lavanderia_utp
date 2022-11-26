@@ -4,9 +4,7 @@ import com.lavanderia.utp.dao.CategoriaDAO;
 import com.lavanderia.utp.dao.ServicioDAO;
 import com.lavanderia.utp.model.Categoria;
 import com.lavanderia.utp.model.Servicio;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,7 +21,7 @@ public class ServicioController {
 
     @RequestMapping("/servicios")
     public String listAll(Model model) {
-        List<Servicio> listServicios = servicioDAO.getAll();
+        List<Servicio> listServicios = servicioDAO.getByActivo(false);
         model.addAttribute("listServicios", listServicios);
         return "servicios";
     }
@@ -31,7 +29,7 @@ public class ServicioController {
     @RequestMapping("/servicios_add")
     public String showform(Model model) {
         Servicio servicio = new Servicio();
-        List<Categoria> listCategorias = categoriaDAO.getAll();
+        List<Categoria> listCategorias = categoriaDAO.getByActivo(true);
         model.addAttribute("servicio", servicio);
         model.addAttribute("listCategorias", listCategorias);
         return "servicios_add";
@@ -40,7 +38,7 @@ public class ServicioController {
     @RequestMapping("/servicio_edit")
     public String showformEdit(@RequestParam int id, Model model) {
         Servicio servicio = servicioDAO.getById(id);
-        List<Categoria> listCategorias = categoriaDAO.getAll();
+        List<Categoria> listCategorias = categoriaDAO.getByActivo(true);
         model.addAttribute("servicio", servicio);
         model.addAttribute("listCategorias", listCategorias);
         return "servicio_edit";

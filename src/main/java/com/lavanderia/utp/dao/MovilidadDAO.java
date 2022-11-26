@@ -20,10 +20,18 @@ public class MovilidadDAO implements GenericInterface<Movilidad> {
 
     @Override
     public List<Movilidad> getAll() {
-        List<Movilidad> list = new ArrayList<>();
+        return null;
+    }
 
+    public List<Movilidad> getByActivo(boolean filtrarActivos) {
+        List<Movilidad> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT m.id, m.nombre, m.marca, m.modelo, m.chofer_id, m.disponible, m.fecha_creacion, CONCAT(c.nombres, ' ', c.apellidos) AS chofer FROM movilidades m JOIN choferes c ON c.id = m.chofer_id ORDER BY m.id");
+            String sql = "SELECT m.id, m.nombre, m.marca, m.modelo, m.chofer_id, m.disponible, m.fecha_creacion, CONCAT(c.nombres, ' ', c.apellidos) AS chofer FROM movilidades m JOIN choferes c ON c.id = m.chofer_id";
+            if (filtrarActivos) {
+                sql += " WHERE m.disponible = true";
+            }
+            sql += " ORDER BY m.id";
+            ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Movilidad movilidad = new Movilidad();

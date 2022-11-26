@@ -17,7 +17,7 @@ public class CategoriaController {
 
     @RequestMapping("/categorias")
     public String listAll(Model model) {
-        List<Categoria> listCategorias = categoriaDAO.getAll();
+        List<Categoria> listCategorias = categoriaDAO.getByActivo(false);
         model.addAttribute("listCategorias", listCategorias);
         return "categorias";
     }

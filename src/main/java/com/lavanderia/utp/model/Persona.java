@@ -19,6 +19,7 @@ public class Persona {
     char sexo;
     Date fecha_creacion;
     char tipo_persona;
+    boolean activo;
     
     public Persona() {
     }
@@ -136,6 +137,13 @@ public class Persona {
 
     public void setFechaCreacion(Date fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
-    } 
-    
+    }
+
+    public boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 }

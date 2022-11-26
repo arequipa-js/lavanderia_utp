@@ -20,7 +20,7 @@ public class MovilidadController {
 
     @RequestMapping("/movilidades")
     public String listAll(Model model) {
-        List<Movilidad> listMovilidades = movilidadDAO.getAll();
+        List<Movilidad> listMovilidades = movilidadDAO.getByActivo(false);
         model.addAttribute("listMovilidades", listMovilidades);
         return "movilidades";
     }

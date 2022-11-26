@@ -5,7 +5,6 @@ import com.lavanderia.utp.dao.PrendaDAO;
 import com.lavanderia.utp.dao.ServicioDAO;
 import com.lavanderia.utp.dao.SolicitudDAO;
 import com.lavanderia.utp.dao.SolicitudDetalleDAO;
-import com.lavanderia.utp.model.Comprobante;
 import com.lavanderia.utp.model.Persona;
 import com.lavanderia.utp.model.Prenda;
 import com.lavanderia.utp.model.Servicio;
@@ -47,8 +46,8 @@ public class SolicitudController {
     public String showform(Model model) {
         Solicitud solicitud = new Solicitud();
         SolicitudDetalle solicitudDetalle = new SolicitudDetalle();
-        List<Persona> listClientes = personaDAO.getAll('C');
-        List<Servicio> listServicios = servicioDAO.getAll();
+        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+        List<Servicio> listServicios = servicioDAO.getByActivo(true);
         List<Prenda> listPrendas = prendaDAO.getAll();
         model.addAttribute("solicitud", solicitud);
         model.addAttribute("listClientes", listClientes);
@@ -61,7 +60,7 @@ public class SolicitudController {
     @RequestMapping("/solicitud_edit")
     public String showformEdit(@RequestParam int id, Model model) {
         Solicitud solicitud = solicitudDAO.getById(id);
-        List<Persona> listClientes = personaDAO.getAll('C');
+        List<Persona> listClientes = personaDAO.getPersonas('C', true);
         model.addAttribute("solicitud", solicitud);
         model.addAttribute("listClientes", listClientes);
         return "solicitud_edit";
@@ -96,7 +95,7 @@ public class SolicitudController {
         Solicitud solicitud = solicitudDAO.getById(id);
         Persona cliente = personaDAO.getById(solicitud.getPersonaId());
         SolicitudDetalle solicitudDetalle = new SolicitudDetalle();
-        List<Servicio> listServicios = servicioDAO.getAll();
+        List<Servicio> listServicios = servicioDAO.getByActivo(true);
         List<Prenda> listPrendas = prendaDAO.getByClienteId(cliente.getId());
         model.addAttribute("solicitud", id);
         model.addAttribute("cliente", cliente);

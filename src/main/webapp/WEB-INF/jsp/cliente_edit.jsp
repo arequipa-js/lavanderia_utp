@@ -49,6 +49,13 @@
                         Masculino <form:radiobutton path="sexo" value="M"  cssClass="form-check-input" checked="true" />  
                         Femenino <form:radiobutton path="sexo" value="F"  cssClass="form-check-input" />
                     </div>
+                    <div class="mb-1">
+                      <label class="form-label">Activo</label>
+                    </div>
+                    <div class="mb-3">
+                        Si <form:radiobutton path="activo" value="1" cssClass="form-check-input" />
+                        No <form:radiobutton path="activo" value="0" cssClass="form-check-input" />
+                    </div>
                     <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
                 </form:form>
             </div>

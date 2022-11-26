@@ -20,10 +20,18 @@ public class CategoriaDAO implements GenericInterface<Categoria> {
 
     @Override
     public List<Categoria> getAll() {
-        List<Categoria> list = new ArrayList<>();
+        return null;
+    }
 
+    public List<Categoria> getByActivo(boolean filtrarActivos) {
+        List<Categoria> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT * FROM categorias ORDER BY id");
+            String sql = "SELECT * FROM categorias";
+            if (filtrarActivos) {
+                sql += " WHERE activo = true";
+            }
+            sql += " ORDER BY id";
+            ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Categoria categoria = new Categoria();

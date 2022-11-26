@@ -40,6 +40,7 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Sexo</th>
+                                <th scope="col">Activo</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                             </tr>
@@ -56,6 +57,7 @@
                                     <td>${c.email}</td>
                                     <td>${c.telefono}</td>
                                     <td>${c.sexo}</td>
+                                    <td><c:out value="${c.activo ? 'Si' : 'No'}" /></td>
                                     <td><a href="cliente_edit?id=${c.id}"><i class="bi bi-pencil-fill"></i></a></td>
                                     <td><a href="javascript:confirmDelete(${c.id});"><i class="bi bi-trash-fill"></i></a></td>
                                 </tr>
