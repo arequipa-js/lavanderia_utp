@@ -15,7 +15,7 @@ public class SolicitudDetalle {
     String servicio;
     int tarifa;
     int cantidad;
-    Date fecha_creacion;
+    String fecha_solicitud;
     char estado;
     
     public SolicitudDetalle() {
@@ -99,16 +99,20 @@ public class SolicitudDetalle {
     public void setServicio(String servicio) {
         this.servicio = servicio;
     }
-    
-    public String getFechaCreacion() {
+
+    public String getFechaSolicitud() {
+        return fecha_solicitud;
+    }
+
+    public void setFechaSolicitud(String fecha_solicitud) {
+        this.fecha_solicitud = fecha_solicitud;
+    }
+
+    /*public String getFechaCreacion() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String strDate = dateFormat.format(fecha_creacion);
         return strDate;
-    }
-
-    public void setFechaCreacion(Date fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
-    } 
+    }*/
 
     public char getEstado() {
         return estado;

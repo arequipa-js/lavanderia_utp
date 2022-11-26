@@ -27,7 +27,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="fechaRecojo" class="form-label">Fecha de recojo</label>
-                        <form:input path="fechaRecojo" cssClass="form-control w-25" required="true" />
+                        <form:input type="date" path="fechaRecojo" cssClass="form-control w-25" required="true" min="2022-01-01" />
                     </div>
                     <div class="mb-3">
                         <label for="horaRecojo" class="form-label">Hora de recojo</label>

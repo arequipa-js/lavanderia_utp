@@ -75,7 +75,7 @@ public class SolicitudController {
         model.addAttribute("cliente", cliente);
         model.addAttribute("listSolicitudDetalles", solicitudDetalles);
         model.addAttribute("solicitud", id);
-        model.addAttribute("fechaSolicitud", solicitud.getFechaCreacion());
+        model.addAttribute("fechaSolicitud", solicitud.getFechaSolicitud());
         return "comprobante";
     }
 
@@ -156,7 +156,7 @@ public class SolicitudController {
         System.out.println(servicios);
 
         parameters.put("cliente", "Cliente: " + cliente.getNombres() + " " + cliente.getApellidos());
-        parameters.put("fecha", "Fecha: " + solicitud.getFechaCreacion());
+        parameters.put("fecha", "Fecha: " + solicitud.getFechaSolicitud());
         parameters.put("total", "Total: " + total);
         parameters.put("servicios", servicios);
 

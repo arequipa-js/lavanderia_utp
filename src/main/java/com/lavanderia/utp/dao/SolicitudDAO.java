@@ -33,7 +33,7 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
     public List<Solicitud> getByEstado(char estado) {
         List<Solicitud> list = new ArrayList<>();
         try {
-            String sql = "SELECT s.id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, s.estado FROM solicitudes s JOIN personas p ON p.id = s.persona_id";
+            String sql = "SELECT s.id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, s.estado FROM solicitudes s JOIN personas p ON p.id = s.persona_id";
             if (estado != '*') {
                 sql += " WHERE s.estado = '" + estado + "'";
             }
@@ -44,7 +44,7 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
                 Solicitud solicitud = new Solicitud();
                 solicitud.setId(rs.getInt("id"));
                 solicitud.setPersonaId(rs.getInt("persona_id"));
-                solicitud.setFechaCreacion(rs.getDate("fc"));
+                solicitud.setFechaSolicitud(rs.getString("fecha_solicitud"));
                 solicitud.setCliente(rs.getString("cliente"));
                 solicitud.setEstado(rs.getString("estado").charAt(0));
                 list.add(solicitud);
@@ -57,7 +57,7 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
 
     @Override
     public void add(Solicitud solicitud) {
-        String sql = "INSERT INTO solicitudes (persona_id) VALUES (" + solicitud.getPersonaId() + ")";
+        String sql = "INSERT INTO solicitudes (persona_id, fecha_solicitud) VALUES (" + solicitud.getPersonaId() + ", '" + solicitud.getFechaSolicitud() + "')";
         int solicitudId = 0;
         try {
             ps = con.prepareStatement(sql);
@@ -106,7 +106,7 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
             while (rs.next()) {
                 solicitud.setId(rs.getInt("id"));
                 solicitud.setPersonaId(rs.getInt("persona_id"));
-                solicitud.setFechaCreacion(rs.getDate("fecha_creacion"));
+                solicitud.setFechaSolicitud(rs.getString("fecha_solicitud"));
                 solicitud.setEstado(rs.getString("estado").charAt(0));
             }
         } catch (SQLException e) {
@@ -117,7 +117,10 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
 
     @Override
     public void update(Solicitud solicitud) {
-        String sql = "UPDATE solicitudes set persona_id = " + solicitud.getPersonaId() + ", estado = '" + solicitud.getEstado() + "' WHERE id = " + solicitud.getId();
+        String sql = "UPDATE solicitudes set persona_id = " + solicitud.getPersonaId() +
+                ", fecha_solicitud = '" + solicitud.getFechaSolicitud() +
+                "', estado = '" + solicitud.getEstado() + 
+                "' WHERE id = " + solicitud.getId();
         System.out.println(sql);
         try {
             ps = con.prepareStatement(sql);

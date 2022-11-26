@@ -19,7 +19,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="fechaSolicitud" class="form-label">Fecha de Solicitud</label>
-                        <input type="text" class="form-control w-25" id="2">
+                        <form:input type="date" path="fechaSolicitud" cssClass="form-control w-25" required="true" min="2022-01-01" />
                     </div>
                     
                     <div class="mb-3">

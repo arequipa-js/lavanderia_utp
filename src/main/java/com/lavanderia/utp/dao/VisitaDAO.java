@@ -45,7 +45,6 @@ public class VisitaDAO implements GenericInterface<Visita> {
                 visita.setFechaRecojo(rs.getString("fecha_recojo"));
                 visita.setHoraRecojo(rs.getString("hora_recojo"));
                 visita.setSolicitudId(rs.getInt("solicitud_id"));
-                visita.setFechaCreacion(rs.getDate("fecha_creacion"));
                 visita.setCliente(rs.getString("cliente"));
                 visita.setMovilidad(rs.getString("movilidad"));
                 visita.setEstado(rs.getString("estado").charAt(0));
@@ -100,7 +99,6 @@ public class VisitaDAO implements GenericInterface<Visita> {
                 visita.setFechaRecojo(rs.getString("fecha_recojo"));
                 visita.setHoraRecojo(rs.getString("hora_recojo"));
                 visita.setSolicitudId(rs.getInt("solicitud_id"));
-                visita.setFechaCreacion(rs.getDate("fecha_creacion"));
                 visita.setEstado(rs.getString("estado").charAt(0));
             }
         } catch (SQLException e) {

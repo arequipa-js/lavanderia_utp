@@ -11,7 +11,6 @@ public class Visita {
     String fecha_recojo;
     String hora_recojo;
     int solicitud_id;
-    Date fecha_creacion;
     String cliente;
     String movilidad;
     char estado;
@@ -19,12 +18,11 @@ public class Visita {
     public Visita() {
     }
 
-    public Visita(int movilidad_id, String fecha_recojo, String hora_recojo, int solicitud_id, Date fecha_creacion) {
+    public Visita(int movilidad_id, String fecha_recojo, String hora_recojo, int solicitud_id) {
         this.movilidad_id = movilidad_id;
         this.fecha_recojo = fecha_recojo;
         this.hora_recojo = hora_recojo;
         this.solicitud_id = solicitud_id;
-        this.fecha_creacion = fecha_creacion;
     }
     
     public int getId() {
@@ -65,16 +63,6 @@ public class Visita {
 
     public void setSolicitudId(int solicitud_id) {
         this.solicitud_id = solicitud_id;
-    }
-    
-    public String getFechaCreacion() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String strDate = dateFormat.format(fecha_creacion);
-        return strDate;
-    }
-
-    public void setFechaCreacion(Date fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
     }
 
     public String getCliente() {

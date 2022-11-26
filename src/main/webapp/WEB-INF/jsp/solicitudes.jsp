@@ -24,7 +24,7 @@
                     <th scope="col">Cliente</th>
                     <th scope="col">Servicio</th>
                     <th scope="col">Observaciones</th>
-                    <th scope="col">Fecha de creación</th>
+                    <th scope="col">Fecha de solicitud</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -38,7 +38,7 @@
                         <td>${s.cliente}</td>
                         <td>${s.servicio}</td>
                         <td>${s.observaciones}</td>
-                        <td>${s.fechaCreacion}</td>
+                        <td>${s.fechaSolicitud}</td>
                         <td><a href="comprobante?id=${s.solicitudId}"><i class="bi bi-receipt"></i></a></td>
                         <td><a href="solicitud_servicios_add?id=${s.solicitudId}"><i class="bi bi-plus-square-fill"></i></a></td>
                         <td><a href="solicitud_edit?id=${s.solicitudId}"><i class="bi bi-pencil-fill"></i></a></td>

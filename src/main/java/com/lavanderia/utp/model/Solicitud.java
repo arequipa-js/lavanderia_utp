@@ -8,7 +8,6 @@ public class Solicitud {
     
     int id;
     int persona_id;
-    Date fecha_creacion;
     String cliente;
     String fecha_solicitud;
     int servicio_id;
@@ -70,16 +69,6 @@ public class Solicitud {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-    
-    public String getFechaCreacion() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String strDate = dateFormat.format(fecha_creacion);
-        return strDate;
-    }
-
-    public void setFechaCreacion(Date fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
-    } 
 
     public String getCliente() {
         return cliente;

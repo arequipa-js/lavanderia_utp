@@ -43,7 +43,7 @@ public class VisitaController {
     public String showformEdit(@RequestParam int id, Model model) {
         Visita visita = visitaDAO.getById(id);
         List<Movilidad> listMovilidades = movilidadDAO.getByActivo(true);
-        List<Solicitud> listSolicitudes = solicitudDAO.getAll();
+        List<Solicitud> listSolicitudes = solicitudDAO.getByEstado('A');
         model.addAttribute("visita", visita);
         model.addAttribute("listMovilidades", listMovilidades);
         model.addAttribute("listSolicitudes", listSolicitudes);

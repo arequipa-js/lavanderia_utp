@@ -26,7 +26,7 @@ public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
     public List<SolicitudDetalle> getByEstado(char estado) {
         List<SolicitudDetalle> list = new ArrayList<>();
         try {
-            String sql = "SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, sd.observaciones, s.estado FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id ";
+            String sql = "SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, sd.observaciones, s.estado FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id ";
             if (estado != '*') {
                 sql += " WHERE s.estado = '" + estado + "'";
             }
@@ -41,7 +41,7 @@ public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
                 solicitud.setObservaciones(rs.getString("observaciones"));
                 solicitud.setCliente(rs.getString("cliente"));
                 solicitud.setServicio(rs.getString("servicio"));
-                solicitud.setFechaCreacion(rs.getDate("fc"));
+                solicitud.setFechaSolicitud(rs.getString("fecha_solicitud"));
                 solicitud.setEstado(rs.getString("estado").charAt(0));
                 list.add(solicitud);
             }
@@ -67,7 +67,7 @@ public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
     public List<SolicitudDetalle> getBySolicitudId(int id) {
         List<SolicitudDetalle> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, tarifa, sd.observaciones, pre.cantidad, s.estado FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id JOIN prendas pre ON pre.id = sd.prenda_id WHERE s.id = ? ORDER BY s.id");
+            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, tarifa, sd.observaciones, pre.cantidad, s.estado FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id JOIN prendas pre ON pre.id = sd.prenda_id WHERE s.id = ? ORDER BY s.id");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -80,7 +80,7 @@ public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
                 solicitudDetalle.setServicio(rs.getString("servicio"));
                 solicitudDetalle.setTarifa(rs.getInt("tarifa"));
                 solicitudDetalle.setCantidad(rs.getInt("cantidad"));
-                solicitudDetalle.setFechaCreacion(rs.getDate("fc"));
+                solicitudDetalle.setFechaSolicitud(rs.getString("fecha_solicitud"));
                 solicitudDetalle.setEstado(rs.getString("estado").charAt(0));
                 list.add(solicitudDetalle);
             }

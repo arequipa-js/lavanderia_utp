@@ -19,6 +19,10 @@
                         </form:select>
                     </div>
                     <div class="mb-3">
+                        <label for="fechaSolicitud" class="form-label">Fecha de Solicitud</label>
+                        <form:input type="date" path="fechaSolicitud" cssClass="form-control w-25" required="true" min="2022-01-01" />
+                    </div>
+                    <div class="mb-3">
                       <label for="1" class="form-label">Estado</label>
                       <form:select path="estado" cssClass="form-select w-25">
                         <form:option value="A" label="Aceptada" />
