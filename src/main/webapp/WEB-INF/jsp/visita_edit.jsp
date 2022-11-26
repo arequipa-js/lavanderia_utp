@@ -12,7 +12,7 @@
                     <form:hidden path="id" />
                     <div class="mb-3">
                         <label for="1" class="form-label">Solicitud</label>
-                        <form:select path="solicitudId" cssClass="form-select w-50">
+                        <form:select path="solicitudId" cssClass="form-select w-50" autocomplete="off" required="true">
                             <c:forEach var="s" items="${listSolicitudes}">
                                 <form:option value="${s.id}" label="Solicitud 00-${s.id} ${s.cliente}" />
                             </c:forEach>
@@ -57,3 +57,11 @@
             </div>
         </div>
         <jsp:include page="footer.jsp" />
+<script type="text/javascript">
+new TomSelect("#solicitudId",{
+	sortField: {
+		field: "text",
+		direction: "asc"
+	}
+});
+</script>

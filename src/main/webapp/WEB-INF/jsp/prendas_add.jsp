@@ -11,7 +11,7 @@
                 <form:form action="prenda_add" method="post" modelAttribute="prenda">
                     <div class="mb-3">
                         <label for="1" class="form-label">Cliente</label>
-                        <form:select path="personaId" cssClass="form-select w-50">
+                        <form:select path="personaId" cssClass="form-select w-50" autocomplete="off" required="true">
                             <c:forEach var="c" items="${listClientes}">
                                 <form:option value="${c.id}" label="${c.nombres} ${c.apellidos}" />
                             </c:forEach>
@@ -71,3 +71,11 @@
             </div>
         </div>
         <jsp:include page="footer.jsp" />
+<script type="text/javascript">
+    new TomSelect("#personaId", {
+        sortField: {
+            field: "text",
+            direction: "asc"
+	}
+    });
+</script>
