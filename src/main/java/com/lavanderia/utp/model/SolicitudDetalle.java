@@ -16,6 +16,7 @@ public class SolicitudDetalle {
     int tarifa;
     int cantidad;
     Date fecha_creacion;
+    char estado;
     
     public SolicitudDetalle() {
     }
@@ -109,4 +110,11 @@ public class SolicitudDetalle {
         this.fecha_creacion = fecha_creacion;
     } 
 
+    public char getEstado() {
+        return estado;
+    }
+
+    public void setEstado(char estado) {
+        this.estado = estado;
+    }
 }

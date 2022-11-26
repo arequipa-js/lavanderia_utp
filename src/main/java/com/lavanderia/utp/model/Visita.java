@@ -14,7 +14,8 @@ public class Visita {
     Date fecha_creacion;
     String cliente;
     String movilidad;
-    
+    char estado;
+
     public Visita() {
     }
 
@@ -91,8 +92,12 @@ public class Visita {
     public void setMovilidad(String movilidad) {
         this.movilidad = movilidad;
     }
-    
-    
-    
-    
+
+    public char getEstado() {
+        return estado;
+    }
+
+    public void setEstado(char estado) {
+        this.estado = estado;
+    }
 }

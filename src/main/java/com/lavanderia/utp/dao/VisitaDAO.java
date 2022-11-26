@@ -26,10 +26,17 @@ public class VisitaDAO implements GenericInterface<Visita> {
 
     @Override
     public List<Visita> getAll() {
-        List<Visita> list = new ArrayList<>();
+        return null;
+    }
 
+    public List<Visita> getByEstado(char estado) {
+        List<Visita> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT v.id, v.movilidad_id, v.solicitud_id, v.fecha_recojo, v.hora_recojo, v.fecha_creacion, m.nombre as movilidad, CONCAT(p.nombres, ' ', p.apellidos) AS cliente FROM visitas v JOIN movilidades m on m.id = v.movilidad_id JOIN solicitudes s on s.id = v.solicitud_id JOIN personas p on p.id = s.persona_id");
+            String sql = "SELECT v.id, v.movilidad_id, v.solicitud_id, v.fecha_recojo, v.hora_recojo, v.fecha_creacion, m.nombre as movilidad, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, v.estado FROM visitas v JOIN movilidades m on m.id = v.movilidad_id JOIN solicitudes s on s.id = v.solicitud_id JOIN personas p on p.id = s.persona_id";
+            if (estado != '*') {
+                sql += " WHERE v.estado = '" + estado + "'";
+            }
+            ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Visita visita = new Visita();
@@ -41,6 +48,7 @@ public class VisitaDAO implements GenericInterface<Visita> {
                 visita.setFechaCreacion(rs.getDate("fecha_creacion"));
                 visita.setCliente(rs.getString("cliente"));
                 visita.setMovilidad(rs.getString("movilidad"));
+                visita.setEstado(rs.getString("estado").charAt(0));
                 list.add(visita);
             }
         } catch (SQLException e) {
@@ -93,6 +101,7 @@ public class VisitaDAO implements GenericInterface<Visita> {
                 visita.setHoraRecojo(rs.getString("hora_recojo"));
                 visita.setSolicitudId(rs.getInt("solicitud_id"));
                 visita.setFechaCreacion(rs.getDate("fecha_creacion"));
+                visita.setEstado(rs.getString("estado").charAt(0));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -102,7 +111,12 @@ public class VisitaDAO implements GenericInterface<Visita> {
 
     @Override
     public void update(Visita visita) {
-        String sql = "UPDATE visitas set movilidad_id = " + visita.getMovilidadId() + ", solicitud_id = " + visita.getSolicitudId() + ", fecha_recojo = " + visita.getFechaRecojo() + ", hora_recojo = '" + visita.getHoraRecojo() + "' WHERE id = " + visita.getId();
+        String sql = "UPDATE visitas set movilidad_id = " + visita.getMovilidadId() +
+                ", solicitud_id = " + visita.getSolicitudId() +
+                ", fecha_recojo = '" + visita.getFechaRecojo() +
+                "', hora_recojo = '" + visita.getHoraRecojo() +
+                "', estado = '" + visita.getEstado() +
+                "' WHERE id = " + visita.getId();
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();

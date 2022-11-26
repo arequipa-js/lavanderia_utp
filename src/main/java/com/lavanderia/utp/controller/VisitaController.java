@@ -22,8 +22,8 @@ public class VisitaController {
     VisitaDAO visitaDAO = new VisitaDAO();
 
     @RequestMapping("/visitas")
-    public String listAll(Model model) {
-        List<Visita> listVisitas = visitaDAO.getAll();
+    public String listAll(@RequestParam(defaultValue = "*") String estado, Model model) {
+        List<Visita> listVisitas = visitaDAO.getByEstado(estado.charAt(0));
         model.addAttribute("listVisitas", listVisitas);
         return "visitas";
     }
@@ -32,7 +32,7 @@ public class VisitaController {
     public String showform(Model model) {
         Visita visita = new Visita();
         List<Movilidad> listMovilidades = movilidadDAO.getByActivo(true);
-        List<Solicitud> listSolicitudes = solicitudDAO.getAll();
+        List<Solicitud> listSolicitudes = solicitudDAO.getByEstado('A');
         model.addAttribute("visita", visita);
         model.addAttribute("listMovilidades", listMovilidades);
         model.addAttribute("listSolicitudes", listSolicitudes);

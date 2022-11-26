@@ -7,8 +7,9 @@
         <jsp:include page="sidebar.jsp"/>
         <div class="p-3 mb-5 bg-dark text-white">
             <div class="container w-50 mt-5 mb-5">
-                <h2 class="text-left mb-4">Registrar visita</h2>
-                <form:form action="visita_add" method="post" modelAttribute="visita">
+                <h2 class="text-left mb-4">Actualizar visita</h2>
+                <form:form action="visita_update" method="post" modelAttribute="visita">
+                    <form:hidden path="id" />
                     <div class="mb-3">
                         <label for="1" class="form-label">Solicitud</label>
                         <form:select path="solicitudId" cssClass="form-select w-50">
@@ -44,7 +45,14 @@
                             <form:option value="18:00" label="18:00" />
                         </form:select>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">Registrar</button>
+                    <div class="mb-3">
+                      <label for="1" class="form-label">Estado</label>
+                      <form:select path="estado" cssClass="form-select w-25">
+                        <form:option value="P" label="Pendiente" />
+                        <form:option value="R" label="Realizada" />
+                      </form:select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
                 </form:form>
             </div>
         </div>

@@ -14,7 +14,8 @@ public class Solicitud {
     int servicio_id;
     int prenda_id;
     String observaciones;
-    
+    char estado;
+
     public Solicitud() {
     }
 
@@ -87,5 +88,12 @@ public class Solicitud {
     public void setCliente(String cliente) {
         this.cliente = cliente;
     }
-    
+
+    public char getEstado() {
+        return estado;
+    }
+
+    public void setEstado(char estado) {
+        this.estado = estado;
+    }
 }

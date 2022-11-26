@@ -1,9 +1,21 @@
 <jsp:include page="header.jsp"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="p-3 mb-5 bg-dark text-white">
     <div class="container w-100 mt-5 mb-5">
         <h2 class="text-left mb-3">Visitas</h2>
-        <a class="btn btn-primary mb-3" href="visitas_add.html" role="button">Programar Visita</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <a class="btn btn-primary mb-3" href="visitas_add.html" role="button">Programar Visita</a>
+                </div>
+                <div class="col-9">
+                    <a href="visitas?estado=P"><span class="text-light h4">Pendientes</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="visitas?estado=R"><span class="text-light h4 ml-5">Realizadas</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="visitas"><span class="text-light h4 mr-5">Ver Todas</span></a>
+                </div>
+            </div>
+        </div>
         <table class="table bg-white p-5">
             <thead>
                 <tr>
@@ -12,6 +24,8 @@
                     <th scope="col">Movilidad</th>
                     <th scope="col">Fecha de recojo</th>
                     <th scope="col">Hora de recojo</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +36,8 @@
                         <td>${v.movilidad}</td>
                         <td>${v.fechaRecojo}</td>
                         <td>${v.horaRecojo}</td>
+                        <td><c:out value="${fn:substring(v.estado, 0, 1) == 'P' ? 'Pendiente' : 'Realizada'}" /></td>
+                        <td><a href="visita_edit?id=${v.id}"><i class="bi bi-pencil-fill"></i></a></td>
                     </tr>
                 </c:forEach>
             </tbody>

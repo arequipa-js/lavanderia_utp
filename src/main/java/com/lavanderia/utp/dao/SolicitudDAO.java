@@ -27,10 +27,18 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
 
     @Override
     public List<Solicitud> getAll() {
-        List<Solicitud> list = new ArrayList<>();
+        return null;
+    }
 
+    public List<Solicitud> getByEstado(char estado) {
+        List<Solicitud> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT s.id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente FROM solicitudes s JOIN personas p ON p.id = s.persona_id ORDER BY s.id");
+            String sql = "SELECT s.id, s.persona_id, s.fecha_creacion as fc, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, s.estado FROM solicitudes s JOIN personas p ON p.id = s.persona_id";
+            if (estado != '*') {
+                sql += " WHERE s.estado = '" + estado + "'";
+            }
+            sql += " ORDER BY s.id";
+            ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Solicitud solicitud = new Solicitud();
@@ -38,6 +46,7 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
                 solicitud.setPersonaId(rs.getInt("persona_id"));
                 solicitud.setFechaCreacion(rs.getDate("fc"));
                 solicitud.setCliente(rs.getString("cliente"));
+                solicitud.setEstado(rs.getString("estado").charAt(0));
                 list.add(solicitud);
             }
         } catch (SQLException e) {
@@ -98,6 +107,7 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
                 solicitud.setId(rs.getInt("id"));
                 solicitud.setPersonaId(rs.getInt("persona_id"));
                 solicitud.setFechaCreacion(rs.getDate("fecha_creacion"));
+                solicitud.setEstado(rs.getString("estado").charAt(0));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -107,7 +117,8 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
 
     @Override
     public void update(Solicitud solicitud) {
-        String sql = "UPDATE solicitudes set persona_id = " + solicitud.getPersonaId() + " WHERE id = " + solicitud.getId();
+        String sql = "UPDATE solicitudes set persona_id = " + solicitud.getPersonaId() + ", estado = '" + solicitud.getEstado() + "' WHERE id = " + solicitud.getId();
+        System.out.println(sql);
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();

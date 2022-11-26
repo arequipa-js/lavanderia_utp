@@ -36,8 +36,8 @@ public class SolicitudController {
     PrendaDAO prendaDAO = new PrendaDAO();
 
     @RequestMapping("/solicitudes")
-    public String listAll(Model model) {
-        List<SolicitudDetalle> listSolicitudDetalles = solicitudDetalleDAO.getAll();
+    public String listAll(@RequestParam(defaultValue = "*") String estado, Model model) {
+        List<SolicitudDetalle> listSolicitudDetalles = solicitudDetalleDAO.getByEstado(estado.charAt(0));
         model.addAttribute("listSolicitudDetalles", listSolicitudDetalles);
         return "solicitudes";
     }
@@ -62,6 +62,7 @@ public class SolicitudController {
         Solicitud solicitud = solicitudDAO.getById(id);
         List<Persona> listClientes = personaDAO.getPersonas('C', true);
         model.addAttribute("solicitud", solicitud);
+        model.addAttribute("solicitudId", id);
         model.addAttribute("listClientes", listClientes);
         return "solicitud_edit";
     }
