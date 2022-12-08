@@ -13,6 +13,7 @@ import com.lavanderia.utp.model.SolicitudDetalle;
 import com.lavanderia.utp.utils.Common;
 import com.lavanderia.utp.utils.EmailService;
 import com.lavanderia.utp.utils.PDFService;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -37,23 +38,51 @@ public class SolicitudController {
 
     @RequestMapping("/solicitudes")
     public String listAll(@RequestParam(defaultValue = "*") String estado, Model model) {
-        List<SolicitudDetalle> listSolicitudDetalles = solicitudDetalleDAO.getByEstado(estado.charAt(0));
-        model.addAttribute("listSolicitudDetalles", listSolicitudDetalles);
+        List<Solicitud> listSolicitudes = solicitudDAO.getByEstado(estado.charAt(0));
+        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+        Solicitud solicitud = new Solicitud();
+        model.addAttribute("listSolicitudes", listSolicitudes);
+        model.addAttribute("listClientes", listClientes);
+        model.addAttribute("solicitud", solicitud);
+        return "solicitudes";
+    }
+
+    @RequestMapping("/solicitud_search")
+    public String search(int personaId, Model model) {
+        List<Solicitud> listSolicitudes = solicitudDAO.search(personaId);
+        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+        Solicitud solicitud = new Solicitud();
+        model.addAttribute("listSolicitudes", listSolicitudes);
+        model.addAttribute("listClientes", listClientes);
+        model.addAttribute("solicitud", solicitud);
         return "solicitudes";
     }
 
     @RequestMapping("/solicitudes_add")
-    public String showform(Model model) {
-        Solicitud solicitud = new Solicitud();
-        SolicitudDetalle solicitudDetalle = new SolicitudDetalle();
-        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+    public String showform(@RequestParam(defaultValue = "0") int id, Model model) {
+        Solicitud solicitud;
+        List<SolicitudDetalle> solicitudDetalles = null;
+        List<Persona> listClientes = null;
+        List<Prenda> listPrendas = null;
+        if (id > 0) {
+            solicitud = solicitudDAO.getById(id);
+            solicitudDetalles = solicitudDetalleDAO.getBySolicitudId(id);
+            Persona cliente = personaDAO.getById(solicitud.getPersonaId());
+            listPrendas = prendaDAO.getByClienteId(cliente.getId());
+            listClientes = new ArrayList<>();
+            listClientes.add(cliente);
+        } else {
+            solicitud = new Solicitud();
+            listPrendas = prendaDAO.getAll();
+            listClientes = personaDAO.getPersonas('C', true);
+        }
+
         List<Servicio> listServicios = servicioDAO.getByActivo(true);
-        List<Prenda> listPrendas = prendaDAO.getAll();
         model.addAttribute("solicitud", solicitud);
         model.addAttribute("listClientes", listClientes);
         model.addAttribute("listServicios", listServicios);
         model.addAttribute("listPrendas", listPrendas);
-        model.addAttribute("solicitudDetalle", solicitudDetalle);
+        model.addAttribute("listSolicitudDetalles", solicitudDetalles);
         return "solicitudes_add";
     }
 
@@ -85,10 +114,26 @@ public class SolicitudController {
         return "redirect:/solicitudes";
     }
 
+    @RequestMapping("/solicitud_detalle_delete")
+    public String deleteSolicitudForm(@RequestParam int id, int solicitudId) {
+        solicitudDetalleDAO.delete(id);
+        return "redirect:/solicitudes_add.html?id=" + solicitudId;
+    }
+
     @PostMapping("/solicitud_add")
     public String add(@ModelAttribute("solicitud") Solicitud solicitud) {
-        solicitudDAO.add(solicitud);
-        return "redirect:/solicitudes";
+        int solicitudId = solicitud.getId();
+        if (solicitudId == 0) {
+            solicitudId = solicitudDAO.addNew(solicitud);
+        } else {
+            SolicitudDetalle solicitudDetalle = new SolicitudDetalle();
+            solicitudDetalle.setSolicitudId(solicitud.getId());
+            solicitudDetalle.setServicioId(solicitud.getServicioId());
+            solicitudDetalle.setPrendaId(solicitud.getPrendaId());
+            solicitudDetalle.setObservaciones(solicitud.getObservaciones());
+            solicitudDetalleDAO.add(solicitudDetalle);
+        }
+        return "redirect:/solicitudes_add.html?id=" + solicitudId;
     }
 
     @RequestMapping("/solicitud_servicios_add")
@@ -118,6 +163,12 @@ public class SolicitudController {
         return "redirect:/solicitudes";
     }
 
+    @RequestMapping(value = "/prendas_cliente", method = RequestMethod.POST, headers = "Accept=application/json")
+    public @ResponseBody List<Prenda> testing(@RequestParam("clienteId") int clienteId) {
+       List<Prenda> listPrendas = prendaDAO.getByClienteId(clienteId);
+       return listPrendas;
+    }
+
     @RequestMapping(value = "/enviar_comprobante", method = RequestMethod.POST)
     public @ResponseBody String enviarComprobante(@RequestParam("clienteId") int clienteId, @RequestParam("messageStr") String messageStr) {
         try {
@@ -136,7 +187,6 @@ public class SolicitudController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         return "";
     }
 
@@ -154,7 +204,6 @@ public class SolicitudController {
         }
 
         System.out.println(servicios);
-
         parameters.put("cliente", "Cliente: " + cliente.getNombres() + " " + cliente.getApellidos());
         parameters.put("fecha", "Fecha: " + solicitud.getFechaSolicitud());
         parameters.put("total", "Total: " + total);
@@ -163,5 +212,4 @@ public class SolicitudController {
         pdfService.exportPDF(parameters);
         return "redirect:/solicitudes";
     }
-
 }
