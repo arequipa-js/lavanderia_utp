@@ -67,7 +67,7 @@ public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
     public List<SolicitudDetalle> getBySolicitudId(int id) {
         List<SolicitudDetalle> list = new ArrayList<>();
         try {
-            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, tarifa, sd.observaciones, pre.cantidad, s.estado FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id JOIN prendas pre ON pre.id = sd.prenda_id WHERE s.id = ? ORDER BY s.id");
+            ps = con.prepareStatement("SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, se.nombre as servicio, tarifa, sd.observaciones, pre.cantidad, s.estado FROM solicitud_detalles sd JOIN solicitudes s on sd.solicitud_id = s.id JOIN personas p ON p.id = s.persona_id join servicios se on se.id = sd.servicio_id JOIN prendas pre ON pre.id = sd.prenda_id WHERE s.id = ? ORDER BY sd.id");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -103,7 +103,7 @@ public class SolicitudDetalleDAO implements SolicitudDetalleInterface {
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM solicitudes WHERE id = " + id;
+        String sql = "DELETE FROM solicitud_detalles WHERE id = " + id;
         try {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();

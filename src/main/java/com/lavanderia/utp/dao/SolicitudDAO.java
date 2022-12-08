@@ -55,8 +55,30 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
         return list;
     }
 
-    @Override
-    public void add(Solicitud solicitud) {
+    public List<Solicitud> search(int personaId) {
+        List<Solicitud> list = new ArrayList<>();
+        try {
+            String sql = "SELECT s.id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, s.estado FROM solicitudes s JOIN personas p ON p.id = s.persona_id";
+            sql += " WHERE s.persona_id = " + personaId + "";
+            sql += " ORDER BY s.id";
+            ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Solicitud solicitud = new Solicitud();
+                solicitud.setId(rs.getInt("id"));
+                solicitud.setPersonaId(rs.getInt("persona_id"));
+                solicitud.setFechaSolicitud(rs.getString("fecha_solicitud"));
+                solicitud.setCliente(rs.getString("cliente"));
+                solicitud.setEstado(rs.getString("estado").charAt(0));
+                list.add(solicitud);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public int addNew(Solicitud solicitud) {
         String sql = "INSERT INTO solicitudes (persona_id, fecha_solicitud) VALUES (" + solicitud.getPersonaId() + ", '" + solicitud.getFechaSolicitud() + "')";
         int solicitudId = 0;
         try {
@@ -94,6 +116,11 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return solicitudId;
+    }
+
+    @Override
+    public void add(Solicitud solicitud) {
     }
 
     @Override
