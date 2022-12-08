@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 
 import com.lavanderia.utp.utils.DBConnection;
 import java.sql.SQLException;
-
 import com.lavanderia.utp.model.Categoria;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class CategoriaDAO implements GenericInterface<Categoria> {
     static Connection con = DBConnection.getConnection();
     static PreparedStatement ps;
     static ResultSet rs;
-
+    
     @Override
     public List<Categoria> getAll() {
         return null;
@@ -80,7 +79,10 @@ public class CategoriaDAO implements GenericInterface<Categoria> {
 
     @Override
     public void update(Categoria categoria) {
-        String sql = "UPDATE categorias set nombre = '" + categoria.getNombre() + "', descripcion = '" + categoria.getDescripcion() + "', activo = " + categoria.getActivo() + " WHERE id = " + categoria.getId();
+        String sql = "UPDATE categorias set nombre = '" + categoria.getNombre() +
+                "', descripcion = '" + categoria.getDescripcion() +
+                "', activo = " + categoria.getActivo() +
+                " WHERE id = " + categoria.getId();
         System.out.println(sql);
         try {
             ps = con.prepareStatement(sql);

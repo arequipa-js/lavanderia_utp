@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CategoriaController {
-
     CategoriaDAO categoriaDAO = new CategoriaDAO();
 
     @RequestMapping("/categorias")

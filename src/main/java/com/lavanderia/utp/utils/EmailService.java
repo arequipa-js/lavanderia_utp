@@ -14,7 +14,6 @@ import java.util.Properties;
 import javax.mail.MessagingException;
 
 public class EmailService {
-
     private final Properties prop;
 
     public EmailService() {
@@ -34,7 +33,6 @@ public class EmailService {
                 return new PasswordAuthentication(Common.SMTP_USERNAME, Common.SMTP_PASSWORD);
             }
         });
-
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(Common.SMTP_USERNAME));

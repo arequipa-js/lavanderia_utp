@@ -30,7 +30,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Observaciones</label>
-                        <form:input path="observaciones" cssClass="form-control w-75" required="true" />
+                        <form:textarea path="observaciones" rows="5" cols="20" cssClass="form-control w-50" required="true" />
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Registrar</button>
                 </form:form>
