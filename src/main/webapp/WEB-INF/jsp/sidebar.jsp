@@ -10,5 +10,6 @@
   <a href="choferes.html"><i class="bi bi-person-bounding-box m-2"></i>Choferes</a>
   <a href="solicitudes.html"><i class="bi bi-alarm-fill m-2"></i>Solicitudes</a>
   <a href="visitas.html"><i class="bi bi-alarm-fill m-2"></i>Visitas</a>
+  <a href="reportes.html"><i class="bi bi-clipboard2-fill m-2"></i>Reportes</a>
   <a href="/lavanderiautp"><i class="bi bi-box-arrow-left mt-5 m-2"></i>Cerrar sesion</a>
 </div>

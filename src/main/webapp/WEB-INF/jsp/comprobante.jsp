@@ -61,9 +61,6 @@
                 </div>
             </div>
         </div>
-        <a href="export_pdf?solicitudId=${solicitud}&total=<fmt:formatNumber type="number" value="${subtotal + igv}" maxFractionDigits="0" />">
-            <button type="button" class="btn btn-primary mt-3">Exportar a PDF</button>
-        </a>
         <a href="javascript:sendEmail();">
             <button type="button" class="btn btn-primary ml-5 mt-3">Enviar por correo</button>
         </a>

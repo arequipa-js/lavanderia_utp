@@ -190,7 +190,7 @@ public class SolicitudController {
         return "";
     }
 
-    @RequestMapping("/export_pdf")
+    /*@RequestMapping("/export_pdf_comprobante")
     public String exportPDFForm(@RequestParam int solicitudId, @RequestParam int total) throws JRException {
         PDFService pdfService = new PDFService();
         HashMap<String, Object> parameters = new HashMap<>();
@@ -209,7 +209,7 @@ public class SolicitudController {
         parameters.put("total", "Total: " + total);
         parameters.put("servicios", servicios);
 
-        pdfService.exportPDF(parameters);
+        pdfService.exportPDF();
         return "redirect:/solicitudes";
-    }
+    }*/
 }
