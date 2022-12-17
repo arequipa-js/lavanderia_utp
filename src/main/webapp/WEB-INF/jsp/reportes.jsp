@@ -38,7 +38,7 @@
                                     </form:select>
                                 </div>
                                 <div class="col-3">
-                                    <form:input type="date" path="fechaSolicitud" cssClass="form-control w-50" required="true" min="2022-01-01" />
+                                    <form:input type="date" path="fechaSolicitud" cssClass="form-control w-50" min="2022-01-01" />
                                 </div>
                             </div>
                             <div class="form-group row">

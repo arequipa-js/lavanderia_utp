@@ -60,7 +60,7 @@ public class PersonaDAO implements PersonaInterface {
     public List<Persona> search(String searchText) {
         List<Persona> list = new ArrayList<>();
         int dni = Functions.toInteger(searchText);
-        String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion, p.activo FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE (nombres ILIKE " + "'%" + searchText + "%'" + " OR apellidos ILIKE " + "'%" + searchText + "%'" + " OR DNI = " + dni + ") AND tipo_persona='C'";
+        String sql = "SELECT p.id, nombres, apellidos, dni, distrito, distrito_id, direccion, email, telefono, sexo, fecha_creacion, p.activo FROM PERSONAS p LEFT JOIN DISTRITOS d on d.id = p.distrito_id WHERE (email ILIKE " + "'%" + searchText + "%'" + " OR nombres ILIKE " + "'%" + searchText + "%'" + " OR apellidos ILIKE " + "'%" + searchText + "%'" + " OR DNI = " + dni + ") AND tipo_persona='C'";
 
         try {
             ps = con.prepareStatement(sql);

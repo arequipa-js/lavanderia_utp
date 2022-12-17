@@ -8,9 +8,14 @@
         <div class="p-3 mb-5 bg-dark text-white">
             <div class="container w-50 mt-5 mb-5">
                 <h2 class="text-left mb-4">Agregar Cliente</h2>
+                <c:if test="${param.error == 'true'}">
+                    <div class="alert alert-danger w-50" role="alert">
+                       Por favor, ingrese otro email. El email ingresado ya existe.
+                    </div>
+                </c:if>
                 <form:form action="cliente_add" method="post" modelAttribute="cliente">
                     <div class="mb-3">
-                        <label for="nombres" class="form-label">Nombres</label>
+                        <label for="nombres" class="form-label">Nombres ${param.error}</label>
                         <form:input path="nombres" cssClass="form-control w-50" required="true" maxlength="50" />
                     </div>
                     <div class="mb-3">

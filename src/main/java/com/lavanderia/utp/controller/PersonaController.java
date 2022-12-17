@@ -56,8 +56,13 @@ public class PersonaController {
 
     @PostMapping("/cliente_add")
     public String add(@ModelAttribute("cliente") Persona cliente) {
-        personaDAO.add(cliente);
-        return "redirect:/clientes";
+        List<Persona> listClientes = personaDAO.search(cliente.getEmail());
+        if (!listClientes.isEmpty()) {
+            return "redirect:/clientes_add?error=true";
+        } else {
+            personaDAO.add(cliente);
+            return "redirect:/clientes";
+        }
     }
 
     @PostMapping("/cliente_update")
