@@ -9,7 +9,7 @@
             <div class="container w-50 mt-5 mb-5">
                 <h2 class="text-left mb-4">Agregar Prenda</h2>
                 <form:form action="prenda_add" method="post" modelAttribute="prenda">
-                    <div class="mb-3">
+                    <div class="mb-3 ${sessionScope.clienteId != 0 ? 'd-none' : ''}">
                         <label for="1" class="form-label">Cliente</label>
                         <form:select path="personaId" cssClass="form-select w-50" autocomplete="off" required="true">
                             <c:forEach var="c" items="${listClientes}">

@@ -1,17 +1,9 @@
 package com.lavanderia.utp.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-
-import net.sf.jasperreports.engine.JREmptyDataSource;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -40,6 +32,7 @@ public class PDFService {
         int personaId = (Integer) sqlParameters.get("personaId");
         int categoriaId = (Integer) sqlParameters.get("categoriaId");
         int servicioId = (Integer) sqlParameters.get("servicioId");
+        String fechaSolicitud = (String) sqlParameters.get("fechaSolicitud");
         
         if (personaId != 0) {
             sql += " AND p.id = " + personaId + "";
@@ -49,6 +42,9 @@ public class PDFService {
         }
         if (servicioId != 0) {
             sql += " AND se.id = " + servicioId + "";
+        }
+        if (!"".equals(fechaSolicitud)) {
+            sql += " AND s.fecha_solicitud = '" + fechaSolicitud + "'";
         }
 
         parameters.put("query", sql);

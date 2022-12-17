@@ -11,7 +11,7 @@ public interface PersonaInterface {
     public Persona getById(int id);
     public void update(Persona persona);
     public void delete(int id);
-    public boolean login(String email, String password);
+    public Persona login(String email, String password);
     public void addAdmin(Persona persona);
     public void updateAdmin(Persona persona);
 }

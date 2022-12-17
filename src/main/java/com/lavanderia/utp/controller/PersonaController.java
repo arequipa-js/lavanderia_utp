@@ -4,6 +4,7 @@ import com.lavanderia.utp.dao.DistritoDAO;
 import com.lavanderia.utp.dao.PersonaDAO;
 import com.lavanderia.utp.model.Distrito;
 import com.lavanderia.utp.model.Persona;
+import com.lavanderia.utp.utils.Functions;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("clienteId")
 public class PersonaController {
 
     PersonaDAO personaDAO = new PersonaDAO();
@@ -60,7 +63,12 @@ public class PersonaController {
     @PostMapping("/cliente_update")
     public String update(@ModelAttribute("cliente") Persona cliente) {
         personaDAO.update(cliente);
-        return "redirect:/clientes";
+        int clienteId = Functions.getSessionClienteId();
+        if (clienteId != 0) {
+            return "redirect:/inicio";
+        } else {
+            return "redirect:/clientes";
+        }
     }
 
     @RequestMapping("/cliente_search")

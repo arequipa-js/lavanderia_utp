@@ -13,7 +13,7 @@
                         <label for="1" class="form-label">Solicitud</label>
                         <form:select path="solicitudId" cssClass="form-select w-50" autocomplete="off" required="true">
                             <c:forEach var="s" items="${listSolicitudes}">
-                                <form:option value="${s.id}" label="Solicitud 00-${s.id} ${s.cliente}" />
+                                <form:option value="${s.id}" label="Solicitud 00-${s.id} - ${s.cliente} - ${s.fechaSolicitud} " />
                             </c:forEach>
                         </form:select>
                     </div>

@@ -12,7 +12,7 @@
                         <h2 class="text-left mb-4">Registrar Solicitud</h2>
                         <form:form action="solicitud_add" method="post" modelAttribute="solicitud">
                             <form:hidden path="id" />
-                            <div class="mb-3">
+                            <div class="mb-3 ${sessionScope.clienteId != 0 ? 'd-none' : ''}">
                                 <label for="1" class="form-label">Cliente</label>
                                 <form:select path="personaId" cssClass="form-select w-100" autocomplete="off" required="true">
                                     <c:forEach var="c" items="${listClientes}">

@@ -12,6 +12,8 @@ import com.lavanderia.utp.model.PrendaColor;
 import com.lavanderia.utp.model.PrendaEstado;
 import com.lavanderia.utp.model.PrendaMaterial;
 import com.lavanderia.utp.model.PrendaTipo;
+import com.lavanderia.utp.utils.Functions;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("clienteId")
 public class PrendaController {
 
     PersonaDAO personaDAO = new PersonaDAO();
@@ -32,7 +36,13 @@ public class PrendaController {
 
     @RequestMapping("/prendas")
     public String listAll(Model model) {
-        List<Prenda> listPrendas = prendaDAO.getAll();
+        List<Prenda> listPrendas;
+        int clienteId = Functions.getSessionClienteId();
+        if (clienteId != 0) {
+            listPrendas = prendaDAO.getByClienteId(clienteId);
+        } else {
+            listPrendas = prendaDAO.getAll();
+        }
         model.addAttribute("listPrendas", listPrendas);
         return "prendas";
     }
@@ -40,7 +50,15 @@ public class PrendaController {
     @RequestMapping("/prendas_add")
     public String showform(Model model) {
         Prenda prenda = new Prenda();
-        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+        List<Persona> listClientes = new ArrayList<>();
+        int clienteId = Functions.getSessionClienteId();
+        if (clienteId != 0) {
+            Persona persona = personaDAO.getById(clienteId);
+            listClientes.add(persona);
+        } else {
+            listClientes = personaDAO.getPersonas('C', true);
+        }
+
         List<PrendaColor> listColores = prendaColorDAO.getAll();
         List<PrendaTipo> listTipos = prendaTipoDAO.getAll();
         List<PrendaMaterial> listMateriales = prendaMaterialDAO.getAll();
@@ -57,7 +75,14 @@ public class PrendaController {
     @RequestMapping("/prenda_edit")
     public String showformEdit(@RequestParam int id, Model model) {
         Prenda prenda = prendaDAO.getById(id);
-        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+        List<Persona> listClientes = new ArrayList<>();
+        int clienteId = Functions.getSessionClienteId();
+        if (clienteId != 0) {
+            Persona persona = personaDAO.getById(clienteId);
+            listClientes.add(persona);
+        } else {
+            listClientes = personaDAO.getPersonas('C', true);
+        }
         List<PrendaColor> listColores = prendaColorDAO.getAll();
         List<PrendaTipo> listTipos = prendaTipoDAO.getAll();
         List<PrendaMaterial> listMateriales = prendaMaterialDAO.getAll();

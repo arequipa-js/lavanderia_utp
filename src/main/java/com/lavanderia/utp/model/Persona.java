@@ -146,4 +146,12 @@ public class Persona {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public char getTipoPersona() {
+        return tipo_persona;
+    }
+
+    public void setTipoPersona(char tipo_persona) {
+        this.tipo_persona = tipo_persona;
+    }
 }

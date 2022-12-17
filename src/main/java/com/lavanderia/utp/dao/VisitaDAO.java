@@ -29,13 +29,17 @@ public class VisitaDAO implements GenericInterface<Visita> {
         return null;
     }
 
-    public List<Visita> getByEstado(char estado) {
+    public List<Visita> getByEstado(char estado, int personaId) {
         List<Visita> list = new ArrayList<>();
         try {
-            String sql = "SELECT v.id, v.movilidad_id, v.solicitud_id, v.fecha_recojo, v.hora_recojo, v.fecha_creacion, m.nombre as movilidad, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, v.estado FROM visitas v JOIN movilidades m on m.id = v.movilidad_id JOIN solicitudes s on s.id = v.solicitud_id JOIN personas p on p.id = s.persona_id";
+            String sql = "SELECT v.id, v.movilidad_id, v.solicitud_id, v.fecha_recojo, v.hora_recojo, v.fecha_creacion, m.nombre as movilidad, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, v.estado FROM visitas v JOIN movilidades m on m.id = v.movilidad_id JOIN solicitudes s on s.id = v.solicitud_id JOIN personas p on p.id = s.persona_id WHERE 1=1";
             if (estado != '*') {
-                sql += " WHERE v.estado = '" + estado + "'";
+                sql += " AND v.estado = '" + estado + "'";
             }
+            if (personaId != 0) {
+                sql += " AND p.id = " + personaId + "";
+            }
+            sql += " ORDER BY v.id";
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

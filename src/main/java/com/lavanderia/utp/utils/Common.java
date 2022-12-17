@@ -3,6 +3,9 @@ package com.lavanderia.utp.utils;
 
 
 public class Common {
+    // Usuario
+    public static final String DEFAULT_PASSWORD = "prueba";
+
     // Email config
     public static final String SMTP_HOST = "smtp.gmail.com";
     public static final int SMTP_PORT = 465;

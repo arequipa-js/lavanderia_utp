@@ -30,12 +30,16 @@ public class SolicitudDAO implements GenericInterface<Solicitud> {
         return null;
     }
 
-    public List<Solicitud> getByEstado(char estado) {
+    public List<Solicitud> getByEstado(char estado, int personaId) {
         List<Solicitud> list = new ArrayList<>();
         try {
-            String sql = "SELECT s.id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, s.estado FROM solicitudes s JOIN personas p ON p.id = s.persona_id";
+            String sql = "SELECT s.id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, s.estado ";
+            sql += " FROM solicitudes s JOIN personas p ON p.id = s.persona_id WHERE 1=1";
             if (estado != '*') {
-                sql += " WHERE s.estado = '" + estado + "'";
+                sql += " AND s.estado = '" + estado + "'";
+            }
+            if (personaId != 0) {
+                sql += " AND p.id = " + personaId + "";
             }
             sql += " ORDER BY s.id";
             ps = con.prepareStatement(sql);

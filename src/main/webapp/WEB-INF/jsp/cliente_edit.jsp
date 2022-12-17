@@ -7,7 +7,7 @@
         <jsp:include page="sidebar.jsp"/>
         <div class="p-3 mb-5 bg-dark text-white">
             <div class="container w-50 mt-5 mb-5">
-                <h2 class="text-left mb-4">Agregar Cliente</h2>
+                <h2 class="text-left mb-4">Actualizar Cliente</h2>
                 <form:form action="cliente_update" method="post" modelAttribute="cliente">
                     <form:hidden path="id" />
                     <div class="mb-3">
@@ -49,13 +49,15 @@
                         Masculino <form:radiobutton path="sexo" value="M"  cssClass="form-check-input" checked="true" />  
                         Femenino <form:radiobutton path="sexo" value="F"  cssClass="form-check-input" />
                     </div>
-                    <div class="mb-1">
-                      <label class="form-label">Activo</label>
-                    </div>
-                    <div class="mb-3">
-                        Si <form:radiobutton path="activo" value="1" cssClass="form-check-input" />
-                        No <form:radiobutton path="activo" value="0" cssClass="form-check-input" />
-                    </div>
+                    <c:if test="${sessionScope.clienteId == 0}">
+                        <div class="mb-1">
+                          <label class="form-label">Activo</label>
+                        </div>
+                        <div class="mb-3">
+                            Si <form:radiobutton path="activo" value="1" cssClass="form-check-input" />
+                            No <form:radiobutton path="activo" value="0" cssClass="form-check-input" />
+                        </div>
+                    </c:if>
                     <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
                 </form:form>
             </div>

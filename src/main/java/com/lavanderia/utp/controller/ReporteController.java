@@ -33,7 +33,7 @@ public class ReporteController {
     ServicioDAO servicioDAO = new ServicioDAO();
 
     @RequestMapping("/reportes")
-    public String listAll(@RequestParam(defaultValue = "0") int personaId, @RequestParam(defaultValue = "0") int categoriaId, @RequestParam(defaultValue = "0") int servicioId, Model model) {
+    public String listAll(@RequestParam(defaultValue = "0") int personaId, @RequestParam(defaultValue = "0") int categoriaId, @RequestParam(defaultValue = "0") int servicioId, @RequestParam(defaultValue = "") String fechaSolicitud, Model model) {
         List<Persona> listClientes = personaDAO.getPersonas('C', true);
         List<Categoria> listCategorias = categoriaDAO.getByActivo(true);
         List<Servicio> listServicios = servicioDAO.getByActivo(true);
@@ -41,7 +41,8 @@ public class ReporteController {
         solicitudDetalle.setPersonaId(personaId);
         solicitudDetalle.setCategoriaId(categoriaId);
         solicitudDetalle.setServicioId(servicioId);
-        List<SolicitudDetalle> listReportes = reporteDAO.search(personaId, categoriaId, servicioId);
+        solicitudDetalle.setFechaSolicitud(fechaSolicitud);
+        List<SolicitudDetalle> listReportes = reporteDAO.search(personaId, categoriaId, servicioId, fechaSolicitud);
         model.addAttribute("listClientes", listClientes);
         model.addAttribute("listCategorias", listCategorias);
         model.addAttribute("listServicios", listServicios);
@@ -52,12 +53,13 @@ public class ReporteController {
     }
 
     @RequestMapping(value = "/export_pdf", method = RequestMethod.POST, headers = "Accept=application/json")
-    public @ResponseBody String exportPDF(@RequestParam("personaId") int personaId, @RequestParam("categoriaId") int categoriaId, @RequestParam("servicioId") int servicioId) {
+    public @ResponseBody String exportPDF(@RequestParam("personaId") int personaId, @RequestParam("categoriaId") int categoriaId, @RequestParam("servicioId") int servicioId, @RequestParam("fechaSolicitud") String fechaSolicitud) {
         PDFService pdfService = new PDFService();
         HashMap<String, Object> sqlParameters = new HashMap<>();
         sqlParameters.put("personaId", personaId);
         sqlParameters.put("categoriaId", categoriaId);
         sqlParameters.put("servicioId", servicioId);
+        sqlParameters.put("fechaSolicitud", fechaSolicitud);
         try {
             pdfService.exportPDF(sqlParameters);
         } catch (JRException ex) {

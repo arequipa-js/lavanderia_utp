@@ -89,7 +89,7 @@ public class PersonaDAO implements PersonaInterface {
 
     @Override
     public void add(Persona persona) {
-        String sql = "INSERT INTO personas (nombres, apellidos, dni, distrito_id, direccion, email, telefono, sexo, tipo_persona) VALUES ('" + persona.getNombres() + "', '" + persona.getApellidos() + "', " + persona.getDni() + ", " + persona.getDistritoId() + ", '" + persona.getDireccion() + "', '" + persona.getEmail() + "', " + persona.getTelefono() + ", '" + persona.getSexo() + "', 'C')";
+        String sql = "INSERT INTO personas (nombres, apellidos, dni, distrito_id, direccion, email, telefono, sexo, tipo_persona, password) " + "VALUES ('" + persona.getNombres() + "', '" + persona.getApellidos() + "', " + persona.getDni() + ", " + persona.getDistritoId() + ", '" + persona.getDireccion() + "', '" + persona.getEmail() + "', " + persona.getTelefono() + ", '" + persona.getSexo() + "', 'C', " + "'" + Common.DEFAULT_PASSWORD + "'" + ")";
         System.out.println(sql);
 
         try {
@@ -140,6 +140,8 @@ public class PersonaDAO implements PersonaInterface {
 
     @Override
     public void update(Persona persona) {
+        int clienteId = Functions.getSessionClienteId();
+        boolean activo = clienteId == 0 ? persona.getActivo() : true;
         String sql = "UPDATE personas set nombres = '" + persona.getNombres() +
                 "', apellidos = '" + persona.getApellidos() +
                 "', dni = " + persona.getDni() +
@@ -148,7 +150,7 @@ public class PersonaDAO implements PersonaInterface {
                 "', email = '" + persona.getEmail() +
                 "', telefono = " + persona.getTelefono() +
                 ", sexo = '" + persona.getSexo() +
-                "', activo = " + persona.getActivo() +
+                "', activo = " + activo +
                 " WHERE id = " + persona.getId();
         try {
             ps = con.prepareStatement(sql);
@@ -170,18 +172,31 @@ public class PersonaDAO implements PersonaInterface {
     }
 
     @Override
-    public boolean login(String email, String password) {
-        boolean isAuthenticated = false;
+    public Persona login(String email, String password) {
+        Persona persona = null;
         try {
             ps = con.prepareStatement("SELECT * FROM personas WHERE email=? and password=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            isAuthenticated = rs.first();
+            int rowcount = 0;
+            if (rs.last()) {
+              rowcount = rs.getRow();
+              rs.beforeFirst();
+            }
+            if (rowcount > 0) {
+              persona = new Persona();
+            }
+            while (rs.next()) {
+                persona.setId(rs.getInt("id"));
+                persona.setNombres(rs.getString("nombres"));
+                persona.setApellidos(rs.getString("apellidos"));
+                persona.setTipoPersona(rs.getString("tipo_persona").charAt(0));
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return isAuthenticated;
+        return persona;
     }
 
     @Override

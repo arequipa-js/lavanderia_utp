@@ -17,7 +17,7 @@ public class ReporteDAO {
     static PreparedStatement ps;
     static ResultSet rs;
 
-    public List<SolicitudDetalle> search(int personaId, int categoriaId, int servicioId) {
+    public List<SolicitudDetalle> search(int personaId, int categoriaId, int servicioId, String fechaSolicitud) {
         List<SolicitudDetalle> list = new ArrayList<>();
         try {
             String sql = "SELECT sd.id, sd.solicitud_id, s.persona_id, s.fecha_solicitud, CONCAT(p.nombres, ' ', p.apellidos) AS cliente, sd.servicio_id, cat.nombre as categoria, se.nombre as servicio, tarifa \n" +
@@ -37,6 +37,10 @@ public class ReporteDAO {
             if (servicioId != 0) {
                 sql += " AND se.id = " + servicioId + "";
             }
+            if (!"".equals(fechaSolicitud)) {
+                sql += " AND s.fecha_solicitud = '" + fechaSolicitud + "'";
+            }
+            System.out.println(sql);
 
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

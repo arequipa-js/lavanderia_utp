@@ -37,6 +37,9 @@
                                         </c:forEach>
                                     </form:select>
                                 </div>
+                                <div class="col-3">
+                                    <form:input type="date" path="fechaSolicitud" cssClass="form-control w-50" required="true" min="2022-01-01" />
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-3">
@@ -89,7 +92,8 @@
                     var personaId = $("#personaId").val();
                     var categoriaId = $("#categoriaId").val();
                     var servicioId = $("#servicioId").val();
-
+                    var fechaSolicitud = $("#fechaSolicitud").val();
+                    console.log(fechaSolicitud);
                     $.ajax({
                         type: 'POST',
                         dataType: 'text',
@@ -97,7 +101,8 @@
                         data: {
                             personaId: parseInt(personaId),
                             categoriaId: parseInt(categoriaId),
-                            servicioId: parseInt(servicioId)
+                            servicioId: parseInt(servicioId),
+                            fechaSolicitud: fechaSolicitud
                         },
                         success: function () {
                             console.log("success");

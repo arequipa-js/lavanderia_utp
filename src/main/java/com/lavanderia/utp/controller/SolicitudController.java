@@ -12,6 +12,7 @@ import com.lavanderia.utp.model.Solicitud;
 import com.lavanderia.utp.model.SolicitudDetalle;
 import com.lavanderia.utp.utils.Common;
 import com.lavanderia.utp.utils.EmailService;
+import com.lavanderia.utp.utils.Functions;
 import com.lavanderia.utp.utils.PDFService;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes("clienteId")
 public class SolicitudController {
 
     SolicitudDAO solicitudDAO = new SolicitudDAO();
@@ -38,8 +41,15 @@ public class SolicitudController {
 
     @RequestMapping("/solicitudes")
     public String listAll(@RequestParam(defaultValue = "*") String estado, Model model) {
-        List<Solicitud> listSolicitudes = solicitudDAO.getByEstado(estado.charAt(0));
-        List<Persona> listClientes = personaDAO.getPersonas('C', true);
+        List<Persona> listClientes = new ArrayList<>();
+        int clienteId = Functions.getSessionClienteId();
+        if (clienteId != 0) {
+            Persona persona = personaDAO.getById(clienteId);
+            listClientes.add(persona);
+        } else {
+            listClientes = personaDAO.getPersonas('C', true);
+        }
+        List<Solicitud> listSolicitudes  = solicitudDAO.getByEstado(estado.charAt(0), clienteId);
         Solicitud solicitud = new Solicitud();
         model.addAttribute("listSolicitudes", listSolicitudes);
         model.addAttribute("listClientes", listClientes);
@@ -62,7 +72,7 @@ public class SolicitudController {
     public String showform(@RequestParam(defaultValue = "0") int id, Model model) {
         Solicitud solicitud;
         List<SolicitudDetalle> solicitudDetalles = null;
-        List<Persona> listClientes = null;
+        List<Persona> listClientes = new ArrayList<>();
         List<Prenda> listPrendas = null;
         if (id > 0) {
             solicitud = solicitudDAO.getById(id);
@@ -73,8 +83,15 @@ public class SolicitudController {
             listClientes.add(cliente);
         } else {
             solicitud = new Solicitud();
-            listPrendas = prendaDAO.getAll();
-            listClientes = personaDAO.getPersonas('C', true);
+            int clienteId = Functions.getSessionClienteId();
+            if (clienteId != 0) {
+                Persona persona = personaDAO.getById(clienteId);
+                listPrendas = prendaDAO.getByClienteId(clienteId);
+                listClientes.add(persona);
+            } else {
+                listPrendas = prendaDAO.getAll();
+                listClientes = personaDAO.getPersonas('C', true);
+            }
         }
 
         List<Servicio> listServicios = servicioDAO.getByActivo(true);
